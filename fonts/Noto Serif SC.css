@@ -1,0 +1,9 @@
+/* noto-serif-sc - */
+@font-face{
+    font-family: "Noto Serif SC", serif;
+    font-optical-sizing: auto;
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+    src: url("./NotoSerifSC-VariableFont_wght.ttf") format("truetype");
+  }
