@@ -484,3 +484,12 @@
   font-size: 0.9rem;
   color: var(--third-text-color);
 }
+.post-svg-container {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.post-svg-container > object {
+  justify-content: center;
+  height: 100%;
+}
