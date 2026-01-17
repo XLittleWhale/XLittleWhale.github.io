@@ -1,0 +1,61 @@
+/* src/styles/global.css */
+
+/* 1. Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap');
+
+/* 2. Tailwind */
+@import "tailwindcss";
+
+/* @import url("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"); */
+
+/* 3. Theme Configuration */
+@theme {
+  --font-sans: "Inter", "system-ui", "sans-serif";
+  --font-serif: "Merriweather", "Georgia", "Cambria", "Times New Roman", "serif";
+}
+
+/* 4. Base Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* [新增] 字体抗锯齿优化 */
+    /* 让 Merriweather 这种衬线体在 Mac/iOS 上看起来更清晰，不会发虚 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* [新增] 这是一个排版神器！ */
+  /* 用于 Links 页面的标题和描述 */
+  h1, h2, h3, p, li, a {
+    /* text-wrap: pretty; 
+       这个属性会智能平衡每一行的字数，
+       防止出现“孤儿词”（即最后一行只有一个单词的情况）。
+       这对于你的 Friends 卡片简介非常有用！
+    */
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+}
+
+/* [新增] 自定义滚动条 (可选) */
+/* 学术网站通常比较素雅，浏览器默认的粗滚动条有点突兀 */
+/* 下面的代码会让滚动条变细、变灰，显得更精致 */
+@media (min-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition;
+  }
+}

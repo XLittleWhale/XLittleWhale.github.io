@@ -1,0 +1,44 @@
+---
+const { pageTitle } = Astro.props;
+import '../styles/global.css';
+---
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="学术主页 - 个人介绍" />
+    <title>{pageTitle}</title>
+	<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+    crossorigin="anonymous"
+  >
+  </head>
+
+  <body class="bg-white text-slate-900 font-sans antialiased text-center">
+    
+    <header class="py-6 mb-8 border-b border-slate-100">
+      <nav class="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-center items-center gap-4">
+        
+        <a href="/" class="font-bold text-xl font-serif tracking-tight">CryoWhale🐋</a>
+        
+        <div class="space-x-6 text-sm font-medium text-slate-600">
+          <a href="/" class="hover:text-blue-600 transition">Home</a>
+		  <a href="/research" class="hover:text-blue-600 transition">Research</a>
+          <a href="/courses" class="hover:text-blue-600 transition">Course Notes</a>
+		  <a href="/links" class="hover:text-blue-600 transition">Links</a>
+        </div>
+        
+      </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 mb-20">
+      <slot />
+    </main>
+
+    <footer class="max-w-3xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-100 text-slate-400 text-sm">
+      <p>If you cool yourself to -273.15℃, you will be 0K.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+---
+// src/pages/courses.astro
+import BaseLayout from '../layouts/Layout.astro'; // 确认路径正确
+
+// --- 数据区 (保持你的数据不变) ---
+const courseCategories = [
+  {
+    title: "Physics",
+    icon: "⚛️",
+    courses: [
+      { name: "Superfluid", url: "/courses/superfluid.pdf" },
+      { name: "Statistical Mechanics", url: "/courses/statistical_mechanics.pdf" },
+    ]
+  },
+  {
+    title: "Mathematics",
+    icon: "📐",
+    courses: [
+      { name: "Ordinary Differential Equations", url: "/courses/ODE.pdf" },
+    ]
+  },
+  {
+    title: "Engineering",
+    icon: "⚙️",
+    courses: [
+      { name: "Heat Transfer", url: "/courses/Heat_Transfer.pdf" },
+      { name: "Engineering Thermodynamics", url: "/courses/Thermal_engineering.pdf" },
+      { name: "Engineering Mechanics", url: "/courses/Engineering_Mechanics.pdf" },
+      { name: "Principle of Cryogenics", url: "/courses/Cryogenic.pdf" },
+      { name: "Principle of Refrigeration", url: "/courses/Refrigeration.pdf" },
+      { name: "Principle of Control", url: "/courses/Control.pdf" },
+    ]
+  },
+  {
+    title: "Computer Science",
+    icon: "💻",
+    courses: []
+  },
+  {
+    title: "Others",
+    icon: "📚",
+    courses: []
+  },
+];
+---
+
+<BaseLayout pageTitle="Course Notes | Jingyuan XU">
+  <section class="max-w-5xl mx-auto mb-16">
+    <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2 text-center">
+      Course Notes
+    </h1>
+    <p class="text-slate-500 text-center mb-16 text-sm">
+      Collections of notes during my course studies.
+    </p>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-left items-start">
+      
+      {courseCategories.map((category) => (
+
+        /* 修改点 1: 外边框加粗
+           border -> border-2 (从1px变成2px)
+        */
+        <div class="bg-slate-50 rounded-xl p-8 pb-10 border-2 border-slate-400 hover:border-blue-400 transition duration-300 hover:shadow-md relative">
+          
+          <h2 class="text-lg font-serif font-bold text-slate-800 mb-6 flex items-center gap-2 border-b-2 border-slate-400 pb-3">
+            <span class="text-2xl">{category.icon}</span>
+            {category.title}
+          </h2>
+          
+          {category.courses.length > 0 ? (
+            <ul class="space-y-6">
+              {category.courses.map((course) => (
+                <li>
+                  <a 
+                    href={course.url} 
+                    target="_blank" 
+                    class="group flex justify-between items-start text-slate-600 hover:text-blue-600 transition"
+                  >
+                    <span class="text-sm font-medium border-b border-transparent group-hover:border-blue-200 leading-relaxed break-words pr-2">
+                      {course.name}
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono group-hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap mt-1">
+                      [PDF]
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="text-xs text-slate-400 italic mb-4">
+              Coming soon...
+            </p>
+          )}
+          
+        </div>
+      ))}
+
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,152 @@
+---
+// src/pages/links.astro
+import BaseLayout from '../layouts/Layout.astro';
+
+// --- 1. 数据区 ---
+
+const academicLinks = [
+  { name: "UK Quantum Fluids Network", url: "https://uk-quantum-fluids-network.github.io/webinars/" },
+  { name: "UK Fluids Network", url: "https://www.fluids.ac.uk/" },
+  { name: "Symposium on Quantum Fluids and Solids", url: "https://people.umass.edu/qfs98/info1.htm" },
+  { name: "Division of Fluid Dynamics (APS)", url: "https://engage.aps.org/dfd/home" },
+  { name: "School of Mechanics and Engineering Science, Peking University, CN", url: "https://mech.pku.edu.cn/index.htm" },
+  { name: "Cryoboat Group, Zhejiang University, CN", url: "https://cryoboat.zju.edu.cn/?lang=zh-cn" },
+  { name: "Quantum Research Group, Newcastle, UK", url: "https://blogs.ncl.ac.uk/quantum/group/" },
+  { name: "Low Temperature Physics, Lancaster, UK", url: "https://www.lancaster.ac.uk/physics/research/experimental-condensed-matter/low-temperature-physics/" },
+  { name: "Guo Lab, FAMU-FSU, US", url: "https://web1.eng.famu.fsu.edu/~wguo/" },
+  { name: "Irvine Lab, UChicago, US", url: "https://irvinelab.uchicago.edu/research.htm" },
+  { name: "HelFA Team, Néel, France", url: "https://neel.cnrs.fr/en/equipes-poles-et-services/helium-du-fondamental-aux-applications-helfa" },
+  { name: "Superfluid Turbulence Group, ENS de Lyon, France", url: "https://www.ens-lyon.fr/PHYSIQUE/teams/dynamique-des-fluides-environnement-climat/research-topics/extreme-conditions" },
+  { name: "LMFA, Ecole Centrale de Lyon, France", url: "http://lmfa.ec-lyon.fr/spip.php?article5&lang=en" },
+  { name: "INPHYNI, Université Côte d'Azur, France", url: "https://gkrstulovic.gitlab.io/#demo" },
+  { name: "Superfluidity Lab, Charles University, Czech Republic", url: "https://superfluid.troja.mff.cuni.cz/grants" },
+  { name: "Topological Quantum Fluids, Aalto, Finland", url: "https://www.aalto.fi/en/department-of-applied-physics/topological-quantum-fluids-rota" },
+  { name: "PoF Group, UTwente, Netherlands", url: "https://pof.tnw.utwente.nl/research" },
+  { name: "Max Planck Institute, Germany", url: "https://www.ds.mpg.de/lfpb/theory-of-turbulent-convection" },
+];
+
+const usefulTools = [
+  { name: "Arxiv", url: "https://arxiv.org/", desc: "Reading Newspaper" },
+  { name: "Overleaf", url: "https://www.overleaf.com/", desc: "Online LaTeX Editor" },
+  { name: "WolframAlpha", url: "https://www.wolframalpha.com/", desc: "Computational Intelligence" },
+];
+
+const friendLinks = [
+  { 
+    name: "Xuancheng TU", 
+    url: "https://maplefaith.github.io/", 
+    title: "PhD of Artifical Intelligence @ CAS", 
+    desc: "Researching on World Model and Robotics." 
+  },
+  { 
+    name: "Hanyu ZHANG", 
+    url: "https://maythics.github.io/", 
+    title: "PhD of Mechanical Engineering Candidate", 
+    desc: "Researching on Robotics and Embodied AI" 
+  },
+  { 
+    name: "Hang WU", 
+    url: "https://syncrnzdclk.github.io/MyNotes/", 
+    title: "MS of Computer Science @ ZJU", 
+    desc: "Reseaching on LLM Reasoning" 
+  },
+  { 
+    name: "Yuzhou HE", 
+    url: "https://wiliiiii.github.io/", 
+    title: "PhD of Mathematics Candidate", 
+    desc: "Researching on Topology" 
+  },
+];
+---
+
+<BaseLayout pageTitle="Links | Jingyuan XU">
+  <section class="max-w-4xl mx-auto mb-16 px-4">
+    <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2 text-center">
+      Links
+    </h1>
+    <p class="text-slate-500 text-center mb-16 text-sm">
+      Academic resources, useful tools, and friends.
+    </p>
+
+    <div class="space-y-20">
+      
+      <div>
+        <h2 class="text-xl font-serif font-bold text-slate-800 mb-8 flex items-center gap-2 border-b-2 border-slate-200 pb-3">
+          <span class="text-2xl">🏛️</span> Academic & Labs
+        </h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6 text-left">
+          {academicLinks.map(link => (
+            <li>
+              <a 
+                href={link.url} 
+                target="_blank"
+                class="flex items-start gap-3 text-slate-600 hover:text-blue-600 transition group"
+              >
+                <span class="w-1.5 h-1.5 mt-2 rounded-full bg-slate-300 group-hover:bg-blue-400 transition flex-shrink-0"></span>
+                <span class="border-b border-transparent group-hover:border-blue-200 leading-relaxed">
+                  {link.name}
+                </span>
+                <span class="text-slate-300 text-xs opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition duration-300">↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-serif font-bold text-slate-800 mb-8 flex items-center gap-2 border-b-2 border-slate-200 pb-3">
+          <span class="text-2xl">🛠️</span> Useful Tools
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+          {usefulTools.map(tool => (
+            <a 
+              href={tool.url} 
+              target="_blank"
+              class="block p-6 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-300 hover:shadow-md transition text-center group"
+            >
+              <div class="font-bold text-slate-700 group-hover:text-blue-700 transition mb-2">
+                {tool.name}
+              </div>
+              <div class="text-xs text-slate-400 font-medium">
+                {tool.desc}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-serif font-bold text-slate-800 mb-8 flex items-center gap-2 border-b-2 border-slate-200 pb-3">
+          <span class="text-2xl">🤝</span> Friends
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+          {friendLinks.map(friend => (
+            <a 
+              href={friend.url} 
+              target="_blank"
+              class="flex flex-col py-6 px-10 rounded-xl border border-slate-200 hover:border-blue-400 hover:bg-slate-50 transition group relative overflow-hidden"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <span class="font-serif font-bold text-lg text-slate-800 group-hover:text-blue-700 transition">
+                  {friend.name}
+                </span>
+                
+                <span class="text-blue-400 text-lg opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out">
+                  →
+                </span>
+              </div>
+              
+              <p class="text-xs font-mono text-slate-500 mb-4 uppercase tracking-wide">
+                {friend.title}
+              </p>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                {friend.desc}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>

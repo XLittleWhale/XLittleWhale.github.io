@@ -1,0 +1,28 @@
+---
+// src/pages/blog/[...slug].astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/Layout.astro';
+
+// 1. 生成静态路径：Astro 需要知道在打包时生成哪些 HTML 页面
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+// 2. 获取当前页面的数据
+const { entry } = Astro.props;
+const { Content } = await entry.render(); // 将 Markdown 渲染为组件
+---
+
+<BaseLayout pageTitle={entry.data.title}>
+  <article class="prose lg:prose-xl mx-auto">
+    <h1>{entry.data.title}</h1>
+    <p class="text-gray-500 italic">发布于: {entry.data.date.toISOString().slice(0, 10)}</p>
+    <hr class="my-4"/>
+    
+    <Content />
+    
+  </article>
+</BaseLayout>

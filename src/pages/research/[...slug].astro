@@ -1,0 +1,49 @@
+---
+// src/pages/research/[...slug].astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/Layout.astro';
+
+// 1. 生成静态路径 (必须)
+export async function getStaticPaths() {
+  const researchEntries = await getCollection('research');
+  return researchEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+// 2. 获取数据
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout pageTitle={entry.data.title}>
+  <article class="max-w-3xl mx-auto px-4 mb-20">
+    
+    <header class="text-center mb-12">
+      <div class="text-sm text-slate-500 mb-4">
+        <a href="/research" class="hover:text-blue-600">← Back to Research</a>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">
+        {entry.data.title}
+      </h1>
+      
+      <div class="flex justify-center gap-4 text-sm text-slate-500 mb-8 font-mono">
+        <span>{entry.data.date.toISOString().slice(0, 10)}</span>
+        {entry.data.status && <span>• {entry.data.status}</span>}
+        {entry.data.venue && <span>• {entry.data.venue}</span>}
+      </div>
+
+      <img 
+        src={entry.data.cover} 
+        alt={entry.data.title}
+        class="w-full aspect-video object-cover rounded-xl shadow-lg"
+      />
+    </header>
+
+    <div class="prose prose-slate prose-lg mx-auto prose-headings:font-serif prose-img:rounded-xl">
+      <Content />
+    </div>
+
+  </article>
+</BaseLayout>
