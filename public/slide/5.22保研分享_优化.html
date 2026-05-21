@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保研经验分享会（最终放映优化版）</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 全局放映级样式重置与性能优化 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0b0f19; /* 更深邃的暗色背景，强化沉浸感 */
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 视窗居中放映视口 */
+        .viewport {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 严格 1280x720 幻灯片核心画布 */
+        #slide-deck {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #F8F9FA; /* 象牙白 */
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+            transform-origin: center center;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* 单页幻灯片基类：加入高级淡入与微位移转场效果 */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.99) translateY(4px);
+            display: flex;
+            flex-direction: column;
+            padding: 60px 90px 80px 90px; /* 优化全局边距平衡 */
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        visibility 0.4s ease;
+            z-index: 1;
+            background-color: #F8F9FA;
+            /* 流动线条学术背景纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Cpath d='M-100 200 Q 300 50, 700 400 T 1400 250' fill='none' stroke='rgba(0,63,136,0.035)' stroke-width='4'/%3E%3Cpath d='M-50 450 Q 400 200, 800 600 T 1350 150' fill='none' stroke='rgba(148,7,10,0.025)' stroke-width='3'/%3E%3Cpath d='M100 100 Q 640 500, 1180 100' fill='none' stroke='rgba(0,63,136,0.015)' stroke-width='2' stroke-dasharray='5,5'/%3E%3C/svg%3E");
+        }
+
+        /* 激活状态幻灯片 */
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            z-index: 2;
+        }
+
+        /* 标题规范：严格左对齐，字数控制在20字内 */
+        .slide-header {
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 6px solid #003F88; /* 浙大蓝 */
+            padding-left: 20px;
+            flex-shrink: 0;
+        }
+        .slide-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: #003F88;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .slide-subtitle {
+            font-size: 15px;
+            color: #94070A; /* 北大红 */
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* 核心内容区 */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            min-height: 0;
+        }
+
+        /* 章节章首页专属样式 */
+        .slide.section-slide {
+            background-color: #003F88;
+            color: #F8F9FA;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Cpath d='M0 720 Q 400 300, 1280 720' fill='none' stroke='rgba(248,249,250,0.04)' stroke-width='5'/%3E%3C/svg%3E");
+        }
+        .section-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 85px;
+            font-weight: 600;
+            color: #94070A;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 54px;
+            font-weight: 900;
+            color: #F8F9FA;
+            margin: 0;
+            letter-spacing: 4px;
+        }
+        .section-desc {
+            font-size: 18px;
+            color: #cbd5e1;
+            margin-top: 20px;
+            font-weight: 300;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        /* 布局组件：两栏排版 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            height: 100%;
+            align-items: center;
+        }
+        .col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+        }
+
+        /* 布局组件：三维微立体卡片 */
+        .tile-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .tile-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 30px rgba(0, 63, 136, 0.03), 0 4px 12px rgba(0,0,0,0.01);
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .tile-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(148, 7, 10, 0.08);
+            border-color: rgba(148, 7, 10, 0.3);
+        }
+        .tile-icon {
+            font-size: 36px;
+            color: #94070A;
+            margin-bottom: 20px;
+        }
+        .tile-title {
+            font-size: 22px;
+            color: #003F88;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        .tile-text {
+            font-size: 16px;
+            color: #475569;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* 布局组件：简约时间轴 */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 60px;
+            padding: 0 10px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, #003F88, #94070A);
+            z-index: 1;
+        }
+        .timeline-node {
+            position: relative;
+            z-index: 2;
+            width: 19%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .timeline-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #F8F9FA;
+            border: 4px solid #003F88;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .timeline-node:hover .timeline-dot {
+            border-color: #94070A;
+            transform: scale(1.2);
+        }
+        .timeline-time {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 22px;
+            color: #94070A;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        .timeline-content {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* 布局组件：大数字数据强调 */
+        .data-focus {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .data-num {
+            font-size: 32px;
+            font-weight: 800;
+            color: #003F88;
+            font-family: 'Noto Serif SC', serif;
+        }
+        .data-unit {
+            font-size: 24px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        /* 简约列表与留白占位卡片 */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .bullet-list li {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+            color: #334155;
+            position: relative;
+            padding-left: 30px;
+        }
+        .bullet-list li::before {
+            content: "•";
+            color: #94070A;
+            font-size: 28px;
+            position: absolute;
+            left: 5px;
+            top: -4px;
+        }
+        .placeholder-box {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 25px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Slide 5 图片自适应排版 */
+        .image-row {
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            width: 100%;
+        }
+        .img-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* 交互图片样式设定：悬停触发轻微上浮提示与放大镜状态 */
+        .slide img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            cursor: zoom-in;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+        }
+        .slide img:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 63, 136, 0.15) !important;
+        }
+
+        /* Slide 8 纵向滚动内容排版 */
+        .scroll-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            overflow-y: auto;
+            min-height: 0;
+            padding-right: 15px;
+            padding-bottom: 10px;
+        }
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .category-row {
+            width: 100%;
+        }
+        .img-columns {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+        .img-col-item {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* PDF 预览器容器 */
+        .pdf-container {
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1 / 1.25;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,63,136,0.06);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* 底部精致页脚 */
+        .slide-footer {
+            position: absolute;
+            bottom: 35px;
+            left: 90px;
+            right: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        /* 放映控制悬浮工具栏 */
+        .playback-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+            opacity: 0.2;
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .playback-controls:hover {
+            opacity: 1;
+        }
+        .control-btn {
+            background: none;
+            border: none;
+            color: #f8fafc;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 4px 6px;
+            transition: color 0.2s, transform 0.1s;
+        }
+        .control-btn:hover {
+            color: #94070A;
+        }
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        .slide-counter {
+            color: #94a3b8;
+            font-size: 13px;
+            font-variant-numeric: tabular-nums;
+            user-select: none;
+            font-weight: 500;
+        }
+
+        /* Fancy: 全局图片放大灯箱样式 */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.35s;
+            cursor: zoom-out;
+        }
+        .zoom-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .zoom-img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            transform: scale(0.92) translateY(10px);
+            transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .zoom-overlay.active .zoom-img {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Fancy: 上下键开启的缩略导航舱样式 */
+        .outline-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 190px;
+            background-color: rgba(11, 15, 25, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 9998;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 15px 30px;
+            justify-content: space-between;
+        }
+        .outline-drawer.active {
+            transform: translateY(0);
+        }
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        .drawer-title-main {
+            font-family: 'Noto Serif SC', serif;
+            color: #f8fafc;
+            font-size: 14px;
+        }
+        .drawer-cards-track {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+        }
+        .drawer-cards-track::-webkit-scrollbar {
+            height: 4px;
+        }
+        .drawer-cards-track::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .drawer-cards-track::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        .drawer-card {
+            flex: 0 0 160px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .drawer-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 63, 136, 0.5);
+            transform: translateY(-2px);
+        }
+        .drawer-card.active {
+            background: rgba(0, 63, 136, 0.25);
+            border-color: #003F88;
+            box-shadow: 0 0 15px rgba(0, 63, 136, 0.4);
+        }
+        .drawer-card.active::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            border-radius: 6px;
+            border: 2px solid #94070A;
+            pointer-events: none;
+        }
+        .card-index {
+            font-size: 11px;
+            color: #94070A;
+            font-weight: 700;
+        }
+        .drawer-card.active .card-index {
+            color: #f8fafc;
+        }
+        .card-name {
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewport">
+        <!-- 核心放映画布 -->
+        <div id="slide-deck">
+
+            <!-- SLIDE 1: 封面页 -->
+            <div class="slide active" style="justify-content: center;">
+                <div style="display: flex; flex-direction: column; justify-content: center; padding-left: 20px;">
+                    <div style="border-left: 10px solid #003F88; padding-left: 40px; max-width: 1200px;">
+                        <h1 style="font-family: 'Noto Serif SC', serif; font-size: 78px; color: #003F88; margin: 0 0 15px 0; line-height: 1.1; font-weight: 900; letter-spacing: 2px;">
+                            保研分享会
+                        </h1>
+                        <p style="font-size: 28px; color: #94070A; margin: 0 0 65px 0; font-weight: 500; letter-spacing: 4px;">
+                            ——论如何把握转会窗（）
+                        </p>
+                        <div style="display: flex; gap: 60px; font-size: 18px; color: #475569; font-weight: 400; margin-top: 40px;">
+                            <div><strong style="color: #003F88;">分享人：</strong>徐静远</div>
+                            <div><strong style="color: #003F88;">专业：</strong>竺可桢学院混合班 · 能源与环境系统工程</div>
+                            <div><strong style="color: #003F88;">拟去向：</strong>北京大学工学院直博（流体力学）</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>保研分享会</span>
+                    <span>2026 EDITION</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: 第一章 引导页 -->
+            <div class="slide section-slide">
+                <div class="section-num">01</div>
+                <div class="section-title">自我介绍</div>
+                <div class="section-desc"></div>
+            </div>
+
+            <!-- SLIDE 3: 自我介绍 详情页 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">不一定要当数值怪</h2>
+                    <span class="slide-subtitle">01 / Introduction</span>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-2">
+                        <div class="col" style="justify-content: center;">
+                            <div class="data-focus">
+                                <div class="data-num">专业排名 1</div>
+                                <div class="data-unit">/ 55（均绩4.50）</div>
+                            </div>
+                            <ul class="bullet-list">
+                                <li><strong>学业：</strong>混合排名前30%，国家奖学金*1</li>
+                                <li><strong>竞赛：</strong>全国大学生数学竞赛一等奖、数学建模校赛二等奖、节能减排校赛三等奖</li>
+                                <li><strong>科研：</strong>申请时无Paper；有一段完整的竺院深度科研项目</li>
+                                <li><strong style="color: #94070A;">大家履历基本上都差不多，重点在于How to Leave An Impression</strong></li>
+                            </ul>
+                        </div>
+                        <div class="col" style="justify-content: center; align-items: center;">
+                            <div class="pdf-container">
+                                <object data="./5.22/cv_cn.pdf" type="application/pdf" width="100%" height="100%">
+                                    <p>您的浏览器不支持直接预览 PDF，请点击 <a href="./5.22/cv_cn.pdf">下载文件</a> 查看。</p>
+                                </object>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第一部分：自我介绍</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: 第二章 引导页 -->
+            <div class="slide section-slide">
+                <div class="section-num">02</div>
+                <div class="section-title">保研时间线</div>
+                <div class="section-desc"></div>
+            </div>
+
+            <!-- SLIDE 5: 保研时间线 详情页 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">转会窗口全流程</h2>
+                    <span class="slide-subtitle">02 / Timeline</span>
+                </div>
+                <div class="slide-body" style="justify-content: space-between;">
+                    <div class="timeline">
+                        <div class="timeline-node">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">1 - 3月</div>
+                            <div class="timeline-content">联系+陶瓷导师<br>冬令营/春季营启动（一般是以科研实习形式进行）<br>清华AIR具身智能、上海创智学院等</div>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">4 - 5月</div>
+                            <div class="timeline-content">主流夏令营网申<br>导师陶瓷黄金期</div>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">6 - 7月</div>
+                            <div class="timeline-content">预推免报名+夏令营启动<br>第一天开营，后面几天考核（不一定有offer效力）<br></div>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">8 - 9月</div>
+                            <div class="timeline-content">预推免启动<br>一半的招收占比，滚动补录</div>
+                        </div>
+                        <div class="timeline-node">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-time">9.25 +</div>
+                            <div class="timeline-content">研招网正式填报<br>最终系统锁定与确认</div>
+                        </div>
+                    </div>
+
+                    <!-- 精致化图片并排排版（重构间距以完美适配1280x720画布） -->
+                    <div class="image-row">
+                        <div class="img-item">
+                            <img src="./5.22/thu_air.jpg" alt="thu_air" style="max-height: 140px; width: auto;" />
+                        </div>
+                        <div class="img-item">
+                            <img src="./5.22/AI_INFRA.jpg" alt="AI_INFRA" style="max-height: 140px; width: auto;" />
+                        </div>
+                        <div class="img-item">
+                            <img src="./5.22/pku_summer.png" alt="pku_summer" style="max-height: 140px; width: auto;" />
+                        </div>
+                        <div class="img-item">
+                            <img src="./5.22/thu_summer.png" alt="thu_summer" style="max-height: 140px; width: auto;" />
+                        </div>
+                        <div class="img-item">
+                            <img src="./5.22/pku_admit.jpg" alt="pku_admit" style="max-height: 140px; width: auto;" />
+                        </div>
+                        <div class="img-item">
+                            <img src="./5.22/admit.jpg" alt="admit" style="max-height: 140px; width: auto;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第二部分：保研时间线</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: 第三章 引导页 -->
+            <div class="slide section-slide">
+                <div class="section-num">03</div>
+                <div class="section-title">信息搜集渠道</div>
+                <div class="section-desc"></div>
+            </div>
+
+            <!-- SLIDE 7: 信息搜集 详情页 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">打破信息差：多源检索</h2>
+                    <span class="slide-subtitle">03 / Channels</span>
+                </div>
+                <div class="slide-body" style="justify-content: center;">
+                    <div class="tile-container">
+                        <div class="tile-card">
+                            <div class="tile-icon"><i class="fa-solid fa-building-columns"></i></div>
+                            <h3 class="tile-title">院网与公众号</h3>
+                            <p class="tile-text">浏览各学院官网的公告、公众号：保研岛，保研夏令营，保研人等</p>
+                        </div>
+                        <div class="tile-card">
+                            <div class="tile-icon"><i class="fa-solid fa-hashtag" style="color:#FF2442;"></i></div>
+                            <h3 class="tile-title" style="color:#FF2442;">小红书、cc98</h3>
+                            <p class="tile-text">小红书信息茧房优势、cc98经验分享和广泛的专业范围</p>
+                        </div>
+                        <div class="tile-card">
+                            <div class="tile-icon"><i class="fa-solid fa-network-wired"></i></div>
+                            <h3 class="tile-title">学长学姐、导师、校友Connection</h3>
+                            <p class="tile-text">Connection is all you need</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第三部分：信息搜集渠道</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: 典型夏令营分类 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">个人的夏令营分类</h2>
+                    <span class="slide-subtitle">03 / Channels</span>
+                </div>
+                
+                <div class="slide-body">
+                    <div class="scroll-container">
+                        
+                        <div class="category-row">
+                            <h3 style="font-size: 18px; color: #94070A; margin: 0 0 10px 0; font-weight: bold; text-align: left;">
+                                1. 传统学院派
+                            </h3>
+                            <div class="img-columns">
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_cs.png" alt="thu_cs" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">计算机系/学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_auto.png" alt="thu_auto" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">自动化系/学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/pku_math.png" alt="pku_math" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">数学系/学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/sjtu_eco.png" alt="sjtu_eco" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">金融/经管/商学院</p>
+                                </div>
+                                <div class="img-col-item" style="visibility: hidden;"></div> 
+                            </div>
+                        </div>
+
+                        <div class="category-row">
+                            <h3 style="font-size: 18px; color: #94070A; margin: 0 0 10px 0; font-weight: bold; text-align: left;">
+                                2. 新式学院派
+                            </h3>
+                            <div class="img-columns">
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_ai.png" alt="thu_ai" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">人工智能学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_cross.png" alt="thu_cross" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">交叉信息研究院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/pku_eng.png" alt="pku_eng" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">北大工学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_air.jpg" alt="thu_air" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">智能产业研究院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/thu_as.png" alt="thu_as" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">高等研究院</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-row">
+                            <h3 style="font-size: 18px; color: #94070A; margin: 0 0 10px 0; font-weight: bold; text-align: left;">
+                                3. 中科院研究所
+                            </h3>
+                            <div class="img-columns">
+                                <div class="img-col-item">
+                                    <img src="./5.22/zky_cs.png" alt="zky_cs" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院计算所</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/zky_auto.png" alt="zky_auto" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院自动化所</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/zky_phys.png" alt="zky_phys" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院物理所/理论物理所/高能物理所</p>
+                                </div>
+                                <div class="img-col-item" style="visibility: hidden;"></div>
+                                <div class="img-col-item" style="visibility: hidden;"></div>
+                            </div>
+                        </div>
+
+                        <div class="category-row">
+                            <h3 style="font-size: 18px; color: #94070A; margin: 0 0 10px 0; font-weight: bold; text-align: left;">
+                                4. 产学结合联培
+                            </h3>
+                            <div class="img-columns">
+                                <div class="img-col-item">
+                                    <img src="./5.22/ailab.png" alt="ailab" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">上海AILAB</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/innovation.png" alt="innovation" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">上海创智学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/zgj.png" alt="zgc" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">北京中关村学院</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/szloop.png" alt="sz_loop" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">深圳河套学院</p>
+                                </div>
+                                <div class="img-col-item" style="visibility: hidden;"></div>
+                            </div>
+                        </div>
+
+                        <div class="category-row">
+                            <h3 style="font-size: 18px; color: #94070A; margin: 0 0 10px 0; font-weight: bold; text-align: left;">
+                                5. 申请制夏令营
+                            </h3>
+                            <div class="img-columns">
+                                <div class="img-col-item">
+                                    <img src="./5.22/westlake.png" alt="westlake" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">西湖大学及夏令营</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/HKU.png" alt="HKU" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">港大提前批</p>
+                                </div>
+                                <div class="img-col-item">
+                                    <img src="./5.22/CUHK.png" alt="CUHK" />
+                                    <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">港中文夏令营</p>
+                                </div>
+                                <div class="img-col-item" style="visibility: hidden;"></div>
+                                <div class="img-col-item" style="visibility: hidden;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第三部分：信息搜集渠道</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 9: 第四章 引导页 -->
+            <div class="slide section-slide">
+                <div class="section-num">04</div>
+                <div class="section-title">陶瓷与面试技巧</div>
+                <div class="section-desc"></div>
+            </div>
+
+            <!-- SLIDE 10: 陶瓷与面试 详情页1 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">学术套磁与导师沟通</h2>
+                    <span class="slide-subtitle">04 / Cold Emailing</span>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-2">
+                        <div class="col" style="justify-content: center;">
+                            <ul class="bullet-list">
+                                <li><strong>邮件：</strong>突出与导师当前研究方向的Match度。</li>
+                                <li><strong>附件：</strong>精简简历、含排名成绩单、精心制作的研究工作汇报Slide（5-10页）。</li>
+                                <li><strong>名额：</strong>TP的老师很多是1-2个名额（相当于默认本校会拿走一个），因此需要提前了解该名额的情况（硕or博？是否联培？）</li>
+                                <li><strong>策略：</strong>互相养鱼的博弈，建议强prof制的夏令营不要养鱼</li>
+                            </ul>
+                        </div>
+                        <div class="col" style="justify-content: center; align-items: center;">
+                            <div class="placeholder-box" style="width: 100%; border: none; padding: 0;">
+                                <img src="./5.22/email.png" alt="email" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第四部分：陶瓷与面试技巧 (1)</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: 陶瓷与面试 详情页2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">案例：北大工学院夏令营</h2>
+                    <span class="slide-subtitle">04 / Interview Real Questions</span>
+                </div>
+                <div class="slide-body" style="justify-content: center;">
+                    <div class="grid-2">
+                        <div class="col" style="justify-content: center;">
+                            <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">流体力学：30min面试</h3>
+                            <ul class="bullet-list" style="font-size:16px;">
+                                <li><strong>英语考核：</strong>5min脱稿自我介绍，追问科研情况</li>
+                                <li><strong>数学考察：</strong>一致收敛、无穷级数、积分定义、对称矩阵与正定性等</li>
+                                <li><strong>专业课问题：</strong>想到哪问到哪</li>
+                            </ul>
+                        </div>
+                        <div class="col" style="justify-content: center;">
+                            <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">固体力学：2h笔试+30min带PPT面试</h3>
+                            <ul class="bullet-list" style="font-size:16px;">
+                                <li><strong>笔试考核：</strong>主要考数学，但涉及了微积分、线代、复变函数、概率论、ODE+PDE</li>
+                                <li><strong>英语考核：</strong>5min自我介绍</li>
+                                <li><strong>科研展示：</strong>PPT做一个Pre</li>
+                                <li><strong>专业课问题：</strong>依旧想到哪问到哪</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第四部分：陶瓷与面试技巧 (2)</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: 陶瓷与面试 详情页3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">案例：其他</h2>
+                    <span class="slide-subtitle">04 / Interview Real Questions</span>
+                </div>
+                <div class="slide-body" style="justify-content: center;">
+                    <div class="grid-2">
+                        <div class="col" style="justify-content: center;">
+                            <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">北大计算机预推免：2h机试+30min面试</h3>
+                            <ul class="bullet-list" style="font-size:16px;">
+                                <li><strong>机试考核：</strong>打代码，leetcode题</li>
+                                <li><strong>面试考核：</strong>压力面，问项目，问cs基础问题：介绍图灵机、某learning架构的原理等</li>
+                            </ul>
+                        </div>
+                        <div class="col" style="justify-content: center;">
+                            <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">创智学院春季营：笔试+机试+面试</h3>
+                            <ul class="bullet-list" style="font-size:16px;">
+                                <li><strong>笔试考核：</strong>数学多选题、矩阵运算、概率论、无穷级数、积分、逻辑题（循环赛）</li>
+                                <li><strong>机试考核：</strong>leetcode题：字符串变换代价、矩阵操作模拟、奇偶异或树</li>
+                                <li><strong>实训考核：</strong>和随机匹配的队友做一个数学建模题</li>
+                                <li><strong>面试考核：</strong>PPT做一个Pre</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第四部分：陶瓷与面试技巧 (3)</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 13: 第五章 引导页 -->
+            <div class="slide section-slide">
+                <div class="section-num">05</div>
+                <div class="section-title">资料准备与后续</div>
+                <div class="section-desc"></div>
+            </div>
+
+            <!-- SLIDE 14: 资料准备与后续 详情页 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">还有第二关</h2>
+                    <span class="slide-subtitle">05 / Documentation</span>
+                </div>
+                <div class="slide-body" style="justify-content: center;">
+                    <div class="grid-2" style="grid-template-columns: 1fr;">
+                        <div class="col" style="justify-content: center;">
+                            <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">offer拿到前后</h3>
+                            <ul class="bullet-list">
+                                <li><strong>候补博弈：</strong>动态排队，切忌盲目相信口头承诺，需备好保底（除非你有渠道判断老板的人品）</li>
+                                <li><strong>多点投递：</strong>在规则范围内适当多投夏令营，增强抗风险能力。</li>
+                                <li><strong>正式录取：</strong>如果获得优营了，研招网把它放第一志愿，到时候对面学校会提示手动录取</li>
+                                <li><strong>录取后：</strong>次年会让交调档函、成绩单以及体检表；会稍微晚于本校保研</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span>第五部分：资料准备与后续</span>
+                    <span>保研分享会</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 15: 结语 Q&A 页 -->
+            <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+                <h2 style="font-family: 'Noto Serif SC', serif; font-size: 58px; color: #003F88; margin: 0 0 20px 0; font-weight: 900; letter-spacing: 2px;">
+                    交流与答疑
+                </h2>
+                <div style="width: 80px; height: 3px; background-color: #003F88; margin-bottom: 40px;"></div>
+                <p style="font-size: 18px; color: #64748b; margin: 0; font-weight: 500;">
+                    分享人：徐静远 | 浙江大学 · 北京大学
+                </p>
+                <div class="slide-footer" style="justify-content: center;">
+                    <span>THANK YOU FOR LISTENING</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Fancy: 全局图片放大灯箱容器 -->
+    <div class="zoom-overlay" id="image-lightbox" title="点击任意空白处缩小恢复">
+        <img class="zoom-img" id="lightbox-target" src="" alt="放大图片">
+    </div>
+
+    <!-- Fancy: 全局幻灯片卡片航线图/缩略导航抽屉 -->
+    <div class="outline-drawer" id="slide-outline-drawer">
+        <div class="drawer-header">
+            <span class="drawer-title-main"><i class="fa-solid fa-map-location-dot" style="margin-right: 8px; color: #94070A;"></i>保研分享会航线图 · 快捷导航舱</span>
+            <span>按下 ↑ 键或 ESC 键关闭大纲</span>
+        </div>
+        <div class="drawer-cards-track" id="drawer-cards-track">
+            <!-- 动态通过 JS 生成卡片 -->
+        </div>
+    </div>
+
+    <!-- 悬浮播放控制台 -->
+    <div class="playback-controls">
+        <span style="color: rgba(255, 255, 255, 0.4); font-size: 11px; margin-right: 5px; font-weight: 400; user-select: none;">提示：按下 ↓ 键开启大纲图</span>
+        <button class="control-btn" id="prev-btn" title="上一页 (← 或 PageUp)"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="slide-counter" id="counter">1 / 15</div>
+        <button class="control-btn" id="next-btn" title="下一页 (→, 空格 或 PageDown)"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="control-btn" id="fullscreen-btn" title="全屏放映 (F)"><i class="fa-solid fa-expand"></i></button>
+    </div>
+
+    <script>
+        // 放映机核心逻辑控制
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const counter = document.getElementById('counter');
+        const deck = document.getElementById('slide-deck');
+
+        // Fancy 导航舱相关 DOM 节点
+        const outlineDrawer = document.getElementById('slide-outline-drawer');
+        const drawerTrack = document.getElementById('drawer-cards-track');
+
+        let currentSlideIndex = 0;
+        let isDrawerOpen = false;
+
+        function updateSlides() {
+            slides.forEach((slide, idx) => {
+                if (idx === currentSlideIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            counter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+            
+            // 同步更新导航舱中 active 卡片的状态
+            const cards = document.querySelectorAll('.drawer-card');
+            cards.forEach((card, idx) => {
+                if (idx === currentSlideIndex) {
+                    card.classList.add('active');
+                    // 自动横向滚动，确保 active 卡片在视线中央
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                updateSlides();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                updateSlides();
+            }
+        }
+
+        // 导航抽屉打开/关闭逻辑
+        function openDrawer() {
+            outlineDrawer.classList.add('active');
+            isDrawerOpen = true;
+            // 延迟聚焦当前激活状态的卡片，确保平滑居中滚动
+            setTimeout(() => {
+                const activeCard = drawerTrack.querySelector('.drawer-card.active');
+                if (activeCard) {
+                    activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 100);
+        }
+
+        function closeDrawer() {
+            outlineDrawer.classList.remove('active');
+            isDrawerOpen = false;
+        }
+
+        // 动态构建导航舱幻灯片卡片 (根据文档内容自动提取最精准的标题)
+        function buildNavigatorCards() {
+            drawerTrack.innerHTML = ''; // 清空轨道
+            slides.forEach((slide, idx) => {
+                let titleText = "封面页";
+                
+                // 自动尝试寻找最优卡片描述
+                const slideTitle = slide.querySelector('.slide-title');
+                const sectionTitle = slide.querySelector('.section-title');
+                const sectionNum = slide.querySelector('.section-num');
+                
+                if (slideTitle) {
+                    titleText = slideTitle.textContent.trim();
+                } else if (sectionTitle) {
+                    const numPrefix = sectionNum ? sectionNum.textContent.trim() + ' ' : '';
+                    titleText = `${numPrefix}${sectionTitle.textContent.trim()}`;
+                } else if (idx === slides.length - 1) {
+                    titleText = "交流与答疑";
+                }
+
+                const card = document.createElement('div');
+                card.className = `drawer-card ${idx === currentSlideIndex ? 'active' : ''}`;
+                card.innerHTML = `
+                    <div class="card-index">SLIDE ${String(idx + 1).padStart(2, '0')}</div>
+                    <div class="card-name" title="${titleText}">${titleText}</div>
+                `;
+
+                // 点击卡片直接跳页，并优雅合上大纲
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentSlideIndex = idx;
+                    updateSlides();
+                    closeDrawer();
+                });
+
+                drawerTrack.appendChild(card);
+            });
+        }
+
+        // 智能自适应视口比例缩放
+        function responsiveScale() {
+            const baseWidth = 1280;
+            const baseHeight = 720;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            const scaleX = windowWidth / baseWidth;
+            const scaleY = windowHeight / baseHeight;
+            
+            const scale = Math.min(scaleX, scaleY);
+            deck.style.transform = `scale(${scale})`;
+        }
+
+        // 快捷键映射 (新增上下方向键功能)
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowDown') { // 向下键：开启快速导航抽屉
+                e.preventDefault();
+                openDrawer();
+            } else if (e.key === 'ArrowUp') {   // 向上键：关闭导航抽屉
+                e.preventDefault();
+                closeDrawer();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+
+        // 鼠标点击事件绑定
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+        
+        // 全屏放映切换
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`无法启用全屏放映: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Fancy: 图片点击无损灯箱放大逻辑
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('lightbox-target');
+        const slideImages = document.querySelectorAll('.slide img');
+
+        slideImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation(); // 阻止冒泡，避免触发切页
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // 点击遮罩或图片本身，变回原样
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        // 按 Esc 键同样可以退出放大状态或关闭导航大纲舱
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                closeDrawer();
+            }
+        });
+
+        // 初始化
+        window.addEventListener('resize', responsiveScale);
+        responsiveScale();
+        buildNavigatorCards(); // 构建航线导航卡片
+        updateSlides();
+    </script>
+</body>
+</html>
