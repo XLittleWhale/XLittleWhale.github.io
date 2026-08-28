@@ -57,7 +57,7 @@
       .stat-value { margin-top: 8px; color: var(--navy); font-size: 26px; font-weight: 850; letter-spacing: -.04em; }
       .stat-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
 
-      .week-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; padding: 8px; border: 1px solid rgba(229,234,243,.9); border-radius: 20px; background: rgba(255,255,255,.66); box-shadow: var(--shadow); }
+      .week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)) 104px; gap: 8px; padding: 8px; border: 1px solid rgba(229,234,243,.9); border-radius: 20px; background: rgba(255,255,255,.66); box-shadow: var(--shadow); }
       .day-button { min-height: 83px; border: 1px solid transparent; border-radius: 14px; padding: 12px; color: var(--muted); background: transparent; text-align: left; transition: .2s ease; }
       .day-button:hover { background: var(--blue-soft); }
       .day-button.active { border-color: #cfd8ff; color: var(--navy); background: white; box-shadow: 0 9px 22px rgba(84,106,193,.12); }
@@ -88,6 +88,8 @@
       .event-title { margin: 0; font-size: 14px; font-weight: 800; line-height: 1.45; }
       .event-location { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.45; }
       .event-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+      .edit-event { border: 1px solid #d7defb; border-radius: 999px; padding: 4px 9px; color: var(--blue); background: white; font-size: 11px; font-weight: 800; }
+      .edit-event:hover { border-color: var(--blue); background: var(--blue-soft); }
       .tag { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 8px; background: var(--blue-soft); color: #4e65c4; font-size: 11px; font-weight: 750; }
       .tag.green { color: var(--green); background: var(--green-soft); }
       .tag.amber { color: var(--amber); background: var(--amber-soft); }
@@ -117,12 +119,32 @@
       .toast { position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translate(-50%, 18px); opacity: 0; pointer-events: none; border-radius: 999px; padding: 11px 15px; color: white; background: var(--navy); box-shadow: 0 12px 34px rgba(16,29,52,.24); font-size: 12px; transition: .22s ease; }
       .toast.show { transform: translate(-50%, 0); opacity: 1; }
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(16,29,52,.48); backdrop-filter: blur(8px); }
+      .modal-backdrop[hidden] { display: none; }
+      .editor-panel { width: min(640px, 100%); max-height: min(760px, calc(100vh - 40px)); overflow: auto; border: 1px solid rgba(255,255,255,.6); border-radius: 24px; background: white; box-shadow: 0 30px 90px rgba(16,29,52,.25); }
+      .editor-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 24px 16px; border-bottom: 1px solid var(--line); }
+      .editor-head h2 { margin: 0; color: var(--navy); font-size: 20px; }
+      .modal-close { width: 32px; height: 32px; border: 0; border-radius: 50%; color: var(--muted); background: var(--paper); font-size: 20px; }
+      .editor-form { padding: 20px 24px 24px; }
+      .editor-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+      .field { display: grid; gap: 6px; }
+      .field.full { grid-column: 1 / -1; }
+      .field label { color: var(--muted); font-size: 12px; font-weight: 800; }
+      .field input, .field select { width: 100%; border: 1px solid var(--line); border-radius: 11px; padding: 11px 12px; color: var(--ink); background: #fbfcff; outline: none; }
+      .field input:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,124,250,.13); background: white; }
+      .editor-hint { margin: 15px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+      .editor-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 21px; }
+      .editor-actions-right { display: flex; gap: 9px; }
+      .modal-action { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; color: var(--ink); background: white; font-size: 12px; font-weight: 800; }
+      .modal-action.primary { border-color: var(--navy); color: white; background: var(--navy); }
+      .modal-action.danger { color: #aa4a4a; }
 
       @media (max-width: 860px) {
         .topbar { flex-direction: column; }
         .actions { justify-content: flex-start; }
         .stats { grid-template-columns: repeat(2, 1fr); }
-        .week-strip { grid-template-columns: repeat(4, 1fr); }
+        .week-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .day-button.all-day { grid-column: span 4; }
         .layout { grid-template-columns: 1fr; }
       }
       @media (max-width: 560px) {
@@ -131,13 +153,16 @@
         .stats { gap: 8px; }
         .stat { padding: 14px; }
         .stat-value { font-size: 22px; }
-        .week-strip { grid-template-columns: repeat(2, 1fr); }
-        .day-button.all-day { min-height: 58px; }
+        .week-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .day-button.all-day { grid-column: span 2; min-height: 58px; }
         .panel-head { align-items: flex-start; padding: 18px 16px 14px; }
         .agenda { padding-left: 16px; padding-right: 16px; }
         .event { grid-template-columns: 68px 1fr auto; gap: 9px; }
         .time { font-size: 12px; }
         .event-title { font-size: 13px; }
+        .editor-grid { grid-template-columns: 1fr; }
+        .field.full { grid-column: auto; }
+        .editor-head, .editor-form { padding-left: 18px; padding-right: 18px; }
       }
       @media print {
         body { background: white; }
@@ -160,6 +185,7 @@
         <div class="actions">
           <button class="action" id="printBtn" type="button">⌁ 打印计划</button>
           <button class="action" id="resetBtn" type="button">↻ 重置进度</button>
+          <button class="action" id="addBtn" type="button">＋ 添加 event</button>
           <button class="action primary" id="allBtn" type="button">查看整周</button>
         </div>
       </header>
@@ -210,6 +236,28 @@
         </aside>
       </div>
     </main>
+    <div class="modal-backdrop" id="editorBackdrop" hidden>
+      <section class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+        <div class="editor-head">
+          <h2 id="editorTitle">编辑每日 event</h2>
+          <button class="modal-close" id="closeEditor" type="button" aria-label="关闭编辑器">×</button>
+        </div>
+        <form class="editor-form" id="eventForm">
+          <input id="eventId" type="hidden" />
+          <div class="editor-grid">
+            <div class="field full"><label for="eventTitle">事件名称</label><input id="eventTitle" required placeholder="例如：组会 / 新生报到" /></div>
+            <div class="field"><label for="eventDate">日期</label><input id="eventDate" type="date" required /></div>
+            <div class="field"><label for="eventCategory">类别</label><select id="eventCategory"><option>迎新</option><option>办理</option><option>讲座</option><option>会议</option><option>体检</option><option>典礼</option><option>其他</option></select></div>
+            <div class="field"><label for="eventStart">开始时间</label><input id="eventStart" type="time" required /></div>
+            <div class="field"><label for="eventEnd">结束时间</label><input id="eventEnd" type="time" required /></div>
+            <div class="field full"><label for="eventLocation">地点及相关安排</label><input id="eventLocation" placeholder="例如：新奥 3004 报告厅" /></div>
+            <div class="field"><label for="eventStatus">状态</label><select id="eventStatus"><option>待开始</option><option>进行中</option><option>已完成</option><option>已取消</option></select></div>
+          </div>
+          <p class="editor-hint">保存后会立即更新页面，并保存在当前浏览器中。静态 GitHub Pages 页面不会自动把编辑内容写回 GitHub 仓库。</p>
+          <div class="editor-actions"><button class="modal-action danger" id="deleteEvent" type="button" hidden>删除事件</button><div class="editor-actions-right"><button class="modal-action" id="cancelEditor" type="button">取消</button><button class="modal-action primary" type="submit">保存事件</button></div></div>
+        </form>
+      </section>
+    </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
@@ -223,7 +271,7 @@
         { key: "2026-09-06", name: "周日", short: "9/6" },
       ];
 
-      const events = [
+      const defaultEvents = [
         ["2026-08-31", "08:30", "15:00", "新生报到", "新奥工学大楼1楼西门厅", "迎新"],
         ["2026-08-31", "09:00", "17:00", "新生图像采集", "新太阳学生活动中心105、106事务中心大厅", "办理"],
         ["2026-09-01", "08:30", "10:00", "新生入学教育会", "新奥3004报告厅", "讲座"],
@@ -240,9 +288,14 @@
         ["2026-09-05", "08:30", "10:30", "学院开学礼", "新奥3004报告厅", "典礼"],
       ].map(([date, start, end, title, location, category], index) => ({ id: `event-${index + 1}`, date, start, end, title, location, category, status: "待开始" }));
 
-      const storageKey = "xlittlewhale-welcome-week-2026-08-31";
-      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-      events.forEach((event) => { if (saved[event.id]) event.status = saved[event.id]; });
+      const storageKey = "xlittlewhale-welcome-week-2026-08-31-events";
+      const oldProgressKey = "xlittlewhale-welcome-week-2026-08-31";
+      const storedEvents = JSON.parse(localStorage.getItem(storageKey) || "null");
+      const events = Array.isArray(storedEvents) ? storedEvents : defaultEvents;
+      if (!storedEvents) {
+        const oldProgress = JSON.parse(localStorage.getItem(oldProgressKey) || "{}");
+        events.forEach((event) => { if (oldProgress[event.id]) event.status = oldProgress[event.id]; });
+      }
 
       let selectedDate = "2026-08-31";
       let showingAll = false;
@@ -251,9 +304,8 @@
       const dayFor = (date) => days.find((day) => day.key === date);
       const hours = (event) => ((new Date(`1970-01-01T${event.end}:00`) - new Date(`1970-01-01T${event.start}:00`)) / 3600000).toFixed(1);
 
-      function saveProgress() {
-        const progress = Object.fromEntries(events.map((event) => [event.id, event.status]));
-        localStorage.setItem(storageKey, JSON.stringify(progress));
+      function saveEvents() {
+        localStorage.setItem(storageKey, JSON.stringify(events));
       }
 
       function renderStats() {
@@ -284,24 +336,63 @@
       function renderAgenda() {
         const category = $("categoryFilter").value;
         const status = $("statusFilter").value;
-        const filtered = events.filter((event) => (!showingAll && event.date !== selectedDate ? false : true)).filter((event) => category === "all" || event.category === category).filter((event) => status === "all" || event.status === status);
+        const filtered = events.filter((event) => (!showingAll && event.date !== selectedDate ? false : true)).filter((event) => category === "all" || event.category === category).filter((event) => status === "all" || event.status === status).sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
         const grouped = days.map((day) => ({ day, items: filtered.filter((event) => event.date === day.key) })).filter((group) => group.items.length);
         $("agendaTitle").textContent = showingAll ? "整周安排" : `${dayFor(selectedDate).name}安排`;
         $("agendaKicker").textContent = showingAll ? `共 ${filtered.length} 项 · 可勾选事项更新完成状态` : `${dayFor(selectedDate).short} · 共 ${filtered.length} 项安排`;
         if (!filtered.length) { $("agenda").innerHTML = `<div class="empty">当前筛选条件下暂无安排。<br>可以切换日期或清除筛选继续查看。</div>`; return; }
-        $("agenda").innerHTML = grouped.map(({ day, items }) => `<section class="agenda-day"><div class="agenda-day-head"><span class="agenda-day-name">${day.name}</span><span class="agenda-day-date">${day.short}</span></div>${items.map((event) => `<article class="event ${event.status === "已完成" ? "done" : ""}"><div class="time">${event.start}<br><span style="color:var(--muted);font-weight:600">至 ${event.end}</span></div><div><p class="event-title">${event.title}</p><p class="event-location">⌖ ${event.location}</p><div class="event-meta"><span class="tag ${categoryClass[event.category] || ""}">${event.category}</span><span class="tag">${hours(event)} 小时</span><span class="tag">${event.status}</span></div></div><input class="check" type="checkbox" aria-label="标记 ${event.title} 为已完成" data-id="${event.id}" ${event.status === "已完成" ? "checked" : ""}></article>`).join("")}</section>`).join("");
-        document.querySelectorAll("[data-id]").forEach((checkbox) => checkbox.addEventListener("change", () => { const event = events.find((item) => item.id === checkbox.dataset.id); event.status = checkbox.checked ? "已完成" : "待开始"; saveProgress(); renderStats(); renderWeekStrip(); renderAgenda(); showToast(checkbox.checked ? "已标记为完成" : "已恢复为待开始"); }));
+        const safe = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+        $("agenda").innerHTML = grouped.map(({ day, items }) => `<section class="agenda-day"><div class="agenda-day-head"><span class="agenda-day-name">${day.name}</span><span class="agenda-day-date">${day.short}</span></div>${items.map((event) => `<article class="event ${event.status === "已完成" ? "done" : ""}"><div class="time">${safe(event.start)}<br><span style="color:var(--muted);font-weight:600">至 ${safe(event.end)}</span></div><div><p class="event-title">${safe(event.title)}</p><p class="event-location">⌖ ${safe(event.location)}</p><div class="event-meta"><span class="tag ${categoryClass[event.category] || ""}">${safe(event.category)}</span><span class="tag">${hours(event)} 小时</span><span class="tag">${safe(event.status)}</span><button class="edit-event" type="button" data-edit="${event.id}">编辑</button></div></div><input class="check" type="checkbox" aria-label="标记 ${safe(event.title)} 为已完成" data-id="${event.id}" ${event.status === "已完成" ? "checked" : ""}></article>`).join("")}</section>`).join("");
+        document.querySelectorAll("[data-id]").forEach((checkbox) => checkbox.addEventListener("change", () => { const event = events.find((item) => item.id === checkbox.dataset.id); event.status = checkbox.checked ? "已完成" : "待开始"; saveEvents(); renderStats(); renderWeekStrip(); renderAgenda(); showToast(checkbox.checked ? "已标记为完成" : "已恢复为待开始"); }));
+        document.querySelectorAll("[data-edit]").forEach((button) => button.addEventListener("click", () => openEditor(button.dataset.edit)));
       }
 
       function render() { renderStats(); renderWeekStrip(); renderAgenda(); }
       function showToast(message) { const toast = $("toast"); toast.textContent = message; toast.classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1800); }
-      const categories = [...new Set(events.map((event) => event.category))];
+      function openEditor(eventId = "") {
+        const event = events.find((item) => item.id === eventId);
+        $("eventId").value = event?.id || "";
+        $("eventTitle").value = event?.title || "";
+        $("eventDate").value = event?.date || (showingAll ? days[0].key : selectedDate);
+        $("eventStart").value = event?.start || "09:00";
+        $("eventEnd").value = event?.end || "10:00";
+        $("eventLocation").value = event?.location || "";
+        $("eventCategory").value = event?.category || "其他";
+        $("eventStatus").value = event?.status || "待开始";
+        $("editorTitle").textContent = event ? "编辑每日 event" : "添加每日 event";
+        $("deleteEvent").hidden = !event;
+        $("editorBackdrop").hidden = false;
+        document.body.style.overflow = "hidden";
+        setTimeout(() => $("eventTitle").focus(), 0);
+      }
+      function closeEditor() { $("editorBackdrop").hidden = true; document.body.style.overflow = ""; }
+      $("eventForm").addEventListener("submit", (submitEvent) => {
+        submitEvent.preventDefault();
+        const id = $("eventId").value;
+        const payload = { date: $("eventDate").value, start: $("eventStart").value, end: $("eventEnd").value, title: $("eventTitle").value.trim(), location: $("eventLocation").value.trim() || "待补充", category: $("eventCategory").value, status: $("eventStatus").value };
+        if (!payload.title || !payload.date || !payload.start || !payload.end) return;
+        if (id) Object.assign(events.find((item) => item.id === id), payload);
+        else events.push({ id: `event-${Date.now()}`, ...payload });
+        saveEvents(); closeEditor(); render(); showToast(id ? "事件已更新" : "事件已添加");
+      });
+      $("deleteEvent").addEventListener("click", () => {
+        const id = $("eventId").value;
+        if (!id || !confirm("确定要删除这个事件吗？")) return;
+        const index = events.findIndex((item) => item.id === id);
+        if (index >= 0) events.splice(index, 1);
+        saveEvents(); closeEditor(); render(); showToast("事件已删除");
+      });
+      $("closeEditor").addEventListener("click", closeEditor);
+      $("cancelEditor").addEventListener("click", closeEditor);
+      $("editorBackdrop").addEventListener("click", (clickEvent) => { if (clickEvent.target === $("editorBackdrop")) closeEditor(); });
+      $("addBtn").addEventListener("click", () => openEditor());
+      const categories = ["迎新", "办理", "讲座", "会议", "体检", "典礼", "其他"];
       categories.forEach((category) => $("categoryFilter").insertAdjacentHTML("beforeend", `<option value="${category}">${category}</option>`));
       $("categoryFilter").addEventListener("change", renderAgenda);
       $("statusFilter").addEventListener("change", renderAgenda);
       $("allBtn").addEventListener("click", () => { showingAll = true; render(); });
       $("printBtn").addEventListener("click", () => window.print());
-      $("resetBtn").addEventListener("click", () => { if (!confirm("确定要清除本机保存的完成进度吗？")) return; events.forEach((event) => event.status = "待开始"); saveProgress(); render(); showToast("进度已重置"); });
+      $("resetBtn").addEventListener("click", () => { if (!confirm("确定要清除本机保存的完成进度吗？")) return; events.forEach((event) => event.status = "待开始"); saveEvents(); render(); showToast("进度已重置"); });
       render();
     </script>
   </body>
