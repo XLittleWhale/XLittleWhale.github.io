@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101d34" />
+    <meta name="description" content="2026 年 8 月 31 日至 9 月 6 日迎新周计划" />
+    <title>迎新周计划 · 2026.08.31</title>
+    <style>
+      :root {
+        --ink: #172238;
+        --muted: #71809a;
+        --navy: #101d34;
+        --blue: #5b7cfa;
+        --blue-soft: #eef2ff;
+        --paper: #f6f8fc;
+        --card: rgba(255, 255, 255, .92);
+        --line: #e5eaf3;
+        --green: #159a78;
+        --green-soft: #e4f8f0;
+        --amber: #bb7910;
+        --amber-soft: #fff5dc;
+        --purple: #805ad5;
+        --purple-soft: #f1ebff;
+        --shadow: 0 18px 55px rgba(33, 47, 82, .09);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 80% 5%, rgba(91,124,250,.16), transparent 27rem),
+          linear-gradient(135deg, #f7f9fe 0%, #eff3fa 100%);
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      button, select { font: inherit; }
+      button { cursor: pointer; }
+      .shell { width: min(1220px, calc(100% - 40px)); margin: 0 auto; padding: 34px 0 56px; }
+      .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+      .eyebrow { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      h1 { margin: 8px 0 10px; color: var(--navy); font-size: clamp(30px, 5vw, 54px); letter-spacing: -.055em; line-height: 1; }
+      .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+      .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
+      .action {
+        display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 999px;
+        padding: 10px 15px; color: var(--ink); background: rgba(255,255,255,.75); box-shadow: 0 5px 18px rgba(44,57,91,.04); font-size: 13px; font-weight: 700;
+      }
+      .action:hover { border-color: #bfcbff; color: var(--blue); background: white; }
+      .action.primary { border-color: var(--navy); color: white; background: var(--navy); }
+
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; margin-bottom: 24px; }
+      .stat { padding: 17px 19px; border: 1px solid rgba(229,234,243,.9); border-radius: 19px; background: var(--card); box-shadow: var(--shadow); }
+      .stat-label { color: var(--muted); font-size: 12px; font-weight: 700; }
+      .stat-value { margin-top: 8px; color: var(--navy); font-size: 26px; font-weight: 850; letter-spacing: -.04em; }
+      .stat-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
+
+      .week-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; padding: 8px; border: 1px solid rgba(229,234,243,.9); border-radius: 20px; background: rgba(255,255,255,.66); box-shadow: var(--shadow); }
+      .day-button { min-height: 83px; border: 1px solid transparent; border-radius: 14px; padding: 12px; color: var(--muted); background: transparent; text-align: left; transition: .2s ease; }
+      .day-button:hover { background: var(--blue-soft); }
+      .day-button.active { border-color: #cfd8ff; color: var(--navy); background: white; box-shadow: 0 9px 22px rgba(84,106,193,.12); }
+      .day-button.all-day { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--blue); background: var(--blue-soft); }
+      .day-name { display: block; font-size: 12px; font-weight: 800; }
+      .day-date { display: block; margin-top: 5px; color: var(--navy); font-size: 21px; font-weight: 850; letter-spacing: -.04em; }
+      .day-count { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+      .day-bar { width: 100%; height: 4px; margin-top: 10px; overflow: hidden; border-radius: 10px; background: #edf0f6; }
+      .day-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), #94a8ff); }
+
+      .layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, .75fr); gap: 22px; margin-top: 22px; align-items: start; }
+      .panel { border: 1px solid rgba(229,234,243,.95); border-radius: 22px; background: var(--card); box-shadow: var(--shadow); }
+      .panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 22px 23px 17px; border-bottom: 1px solid var(--line); }
+      .panel-title { margin: 0; color: var(--navy); font-size: 20px; letter-spacing: -.03em; }
+      .panel-kicker { color: var(--muted); font-size: 12px; }
+      .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+      select { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--ink); background: white; font-size: 12px; outline: none; }
+      select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,124,250,.13); }
+      .agenda { padding: 5px 23px 22px; }
+      .agenda-day { padding-top: 16px; }
+      .agenda-day + .agenda-day { margin-top: 9px; border-top: 1px solid var(--line); }
+      .agenda-day-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 7px 0 10px; }
+      .agenda-day-name { font-size: 13px; font-weight: 850; }
+      .agenda-day-date { color: var(--muted); font-size: 12px; }
+      .event { display: grid; grid-template-columns: 84px 1fr auto; gap: 13px; align-items: center; padding: 13px 0; }
+      .event + .event { border-top: 1px dashed #e9edf4; }
+      .time { align-self: start; padding-top: 2px; color: var(--blue); font-size: 13px; font-weight: 850; letter-spacing: -.02em; }
+      .event-title { margin: 0; font-size: 14px; font-weight: 800; line-height: 1.45; }
+      .event-location { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+      .event-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+      .tag { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 8px; background: var(--blue-soft); color: #4e65c4; font-size: 11px; font-weight: 750; }
+      .tag.green { color: var(--green); background: var(--green-soft); }
+      .tag.amber { color: var(--amber); background: var(--amber-soft); }
+      .tag.purple { color: var(--purple); background: var(--purple-soft); }
+      .check { width: 22px; height: 22px; margin: 0; accent-color: var(--green); }
+      .event.done .event-title, .event.done .event-location { color: #9aa5b7; text-decoration: line-through; }
+      .empty { padding: 40px 14px; color: var(--muted); text-align: center; font-size: 13px; }
+
+      .side { display: grid; gap: 15px; }
+      .side-card { padding: 20px; border: 1px solid rgba(229,234,243,.95); border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
+      .side-card h2 { margin: 0 0 13px; color: var(--navy); font-size: 15px; letter-spacing: -.02em; }
+      .focus { display: flex; gap: 11px; align-items: flex-start; padding: 11px 0; border-top: 1px solid var(--line); }
+      .focus:first-of-type { border-top: 0; padding-top: 0; }
+      .focus-icon { display: grid; flex: 0 0 31px; height: 31px; place-items: center; border-radius: 10px; color: var(--blue); background: var(--blue-soft); }
+      .focus strong { display: block; font-size: 12px; line-height: 1.45; }
+      .focus span { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+      .progress-row { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+      .progress-track { height: 9px; overflow: hidden; border-radius: 99px; background: #edf0f6; }
+      .progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), #5fd0ac); transition: width .3s ease; }
+      .legend { display: grid; gap: 9px; margin-top: 13px; }
+      .legend-row { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; }
+      .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); }
+      .dot.green { background: var(--green); }
+      .dot.amber { background: var(--amber); }
+      .dot.purple { background: var(--purple); }
+      .footnote { margin: 24px 3px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+      .toast { position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translate(-50%, 18px); opacity: 0; pointer-events: none; border-radius: 999px; padding: 11px 15px; color: white; background: var(--navy); box-shadow: 0 12px 34px rgba(16,29,52,.24); font-size: 12px; transition: .22s ease; }
+      .toast.show { transform: translate(-50%, 0); opacity: 1; }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+      @media (max-width: 860px) {
+        .topbar { flex-direction: column; }
+        .actions { justify-content: flex-start; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .week-strip { grid-template-columns: repeat(4, 1fr); }
+        .layout { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 560px) {
+        .shell { width: min(100% - 24px, 1220px); padding-top: 24px; }
+        h1 { font-size: 37px; }
+        .stats { gap: 8px; }
+        .stat { padding: 14px; }
+        .stat-value { font-size: 22px; }
+        .week-strip { grid-template-columns: repeat(2, 1fr); }
+        .day-button.all-day { min-height: 58px; }
+        .panel-head { align-items: flex-start; padding: 18px 16px 14px; }
+        .agenda { padding-left: 16px; padding-right: 16px; }
+        .event { grid-template-columns: 68px 1fr auto; gap: 9px; }
+        .time { font-size: 12px; }
+        .event-title { font-size: 13px; }
+      }
+      @media print {
+        body { background: white; }
+        .shell { width: 100%; padding: 10px 0; }
+        .actions, .filters, .week-strip, .side, .footnote, .toast { display: none !important; }
+        .layout { display: block; margin-top: 0; }
+        .panel { border: 0; box-shadow: none; }
+        .agenda { padding-bottom: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">ACADEMIC WELCOME WEEK · 2026</div>
+          <h1>迎新周计划</h1>
+          <p class="subtitle">2026.08.31 周一 — 2026.09.06 周日 · 学术型学位研究生</p>
+        </div>
+        <div class="actions">
+          <button class="action" id="printBtn" type="button">⌁ 打印计划</button>
+          <button class="action" id="resetBtn" type="button">↻ 重置进度</button>
+          <button class="action primary" id="allBtn" type="button">查看整周</button>
+        </div>
+      </header>
+
+      <section class="stats" aria-label="计划概览">
+        <div class="stat"><div class="stat-label">本周安排</div><div class="stat-value" id="statTotal">—</div><div class="stat-note">项迎新活动</div></div>
+        <div class="stat"><div class="stat-label">活动天数</div><div class="stat-value" id="statDays">—</div><div class="stat-note">天有安排</div></div>
+        <div class="stat"><div class="stat-label">预计总时长</div><div class="stat-value" id="statHours">—</div><div class="stat-note">小时</div></div>
+        <div class="stat"><div class="stat-label">完成进度</div><div class="stat-value" id="statDone">—</div><div class="stat-note" id="statDoneNote">已完成</div></div>
+      </section>
+
+      <nav class="week-strip" id="weekStrip" aria-label="选择日期"></nav>
+
+      <div class="layout">
+        <section class="panel" aria-labelledby="agendaTitle">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title" id="agendaTitle">今日安排</h2>
+              <div class="panel-kicker" id="agendaKicker">点击上方日期切换视图</div>
+            </div>
+            <div class="filters">
+              <label><span class="sr-only">按类别筛选</span><select id="categoryFilter"><option value="all">全部类别</option></select></label>
+              <label><span class="sr-only">按状态筛选</span><select id="statusFilter"><option value="all">全部状态</option><option value="待开始">待开始</option><option value="已完成">已完成</option></select></label>
+            </div>
+          </div>
+          <div class="agenda" id="agenda"></div>
+        </section>
+
+        <aside class="side">
+          <section class="side-card">
+            <h2>本周焦点</h2>
+            <div class="focus"><div class="focus-icon">01</div><div><strong>周一 · 报到与图像采集</strong><span>8:30–17:00 · 新奥工学大楼 / 新太阳学生活动中心</span></div></div>
+            <div class="focus"><div class="focus-icon">02</div><div><strong>周二 · 集中教育与安全讲座</strong><span>8:30–20:30 · 新奥 3004 报告厅</span></div></div>
+            <div class="focus"><div class="focus-icon">03</div><div><strong>周五 · 学校开学典礼</strong><span>8:00–10:00 · 五四体育场</span></div></div>
+          </section>
+          <section class="side-card">
+            <h2>完成进度</h2>
+            <div class="progress-row"><span id="progressLabel">0 / 14 项</span><strong id="progressPercent">0%</strong></div>
+            <div class="progress-track"><span id="progressBar" style="width:0%"></span></div>
+            <div class="legend">
+              <div class="legend-row"><i class="dot"></i>讲座 / 教育</div>
+              <div class="legend-row"><i class="dot green"></i>办理 / 体检</div>
+              <div class="legend-row"><i class="dot amber"></i>典礼 / 重要节点</div>
+              <div class="legend-row"><i class="dot purple"></i>会议 / 班会</div>
+            </div>
+          </section>
+          <p class="footnote">勾选事项后，完成状态会保存在当前浏览器中。要长期修改安排，请直接编辑本页面中的活动数据，再推送到网站仓库即可。</p>
+        </aside>
+      </div>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const days = [
+        { key: "2026-08-31", name: "周一", short: "8/31" },
+        { key: "2026-09-01", name: "周二", short: "9/1" },
+        { key: "2026-09-02", name: "周三", short: "9/2" },
+        { key: "2026-09-03", name: "周四", short: "9/3" },
+        { key: "2026-09-04", name: "周五", short: "9/4" },
+        { key: "2026-09-05", name: "周六", short: "9/5" },
+        { key: "2026-09-06", name: "周日", short: "9/6" },
+      ];
+
+      const events = [
+        ["2026-08-31", "08:30", "15:00", "新生报到", "新奥工学大楼1楼西门厅", "迎新"],
+        ["2026-08-31", "09:00", "17:00", "新生图像采集", "新太阳学生活动中心105、106事务中心大厅", "办理"],
+        ["2026-09-01", "08:30", "10:00", "新生入学教育会", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "10:00", "11:00", "学院学工组招新宣讲", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "11:00", "11:30", "新生心理工作坊—心理中心咨询师带领", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "14:00", "15:00", "防诈安全讲座—派出所", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "15:00", "16:00", "网络安全讲座—青年研究中心", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "16:00", "17:00", "实验室安全讲座—科研部", "新奥3004报告厅", "讲座"],
+        ["2026-09-01", "18:00", "20:30", "新生班会—各班自行组织", "新奥1006、1007、1050会议室", "会议"],
+        ["2026-09-02", "09:00", "11:00", "学校新生第一课", "新奥3004报告厅", "讲座"],
+        ["2026-09-02", "14:00", "17:00", "学术型研究生培养说明会—教务李曼老师", "新奥3004报告厅", "讲座"],
+        ["2026-09-03", "09:00", "10:00", "新生体检及免疫接种", "校医院", "体检"],
+        ["2026-09-04", "08:00", "10:00", "学校开学典礼", "五四体育场", "典礼"],
+        ["2026-09-05", "08:30", "10:30", "学院开学礼", "新奥3004报告厅", "典礼"],
+      ].map(([date, start, end, title, location, category], index) => ({ id: `event-${index + 1}`, date, start, end, title, location, category, status: "待开始" }));
+
+      const storageKey = "xlittlewhale-welcome-week-2026-08-31";
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      events.forEach((event) => { if (saved[event.id]) event.status = saved[event.id]; });
+
+      let selectedDate = "2026-08-31";
+      let showingAll = false;
+      const $ = (id) => document.getElementById(id);
+      const categoryClass = { 讲座: "", 办理: "green", 体检: "green", 典礼: "amber", 会议: "purple", 迎新: "" };
+      const dayFor = (date) => days.find((day) => day.key === date);
+      const hours = (event) => ((new Date(`1970-01-01T${event.end}:00`) - new Date(`1970-01-01T${event.start}:00`)) / 3600000).toFixed(1);
+
+      function saveProgress() {
+        const progress = Object.fromEntries(events.map((event) => [event.id, event.status]));
+        localStorage.setItem(storageKey, JSON.stringify(progress));
+      }
+
+      function renderStats() {
+        const done = events.filter((event) => event.status === "已完成").length;
+        const activeDays = new Set(events.map((event) => event.date)).size;
+        const totalHours = events.reduce((sum, event) => sum + Number(hours(event)), 0).toFixed(1);
+        $("statTotal").textContent = events.length;
+        $("statDays").textContent = activeDays;
+        $("statHours").textContent = totalHours;
+        $("statDone").textContent = `${done}/${events.length}`;
+        $("statDoneNote").textContent = done ? `已完成 ${Math.round(done / events.length * 100)}%` : "尚未完成";
+        $("progressLabel").textContent = `${done} / ${events.length} 项`;
+        $("progressPercent").textContent = `${Math.round(done / events.length * 100)}%`;
+        $("progressBar").style.width = `${done / events.length * 100}%`;
+      }
+
+      function renderWeekStrip() {
+        const maxCount = Math.max(...days.map((day) => events.filter((event) => event.date === day.key).length), 1);
+        $("weekStrip").innerHTML = days.map((day) => {
+          const count = events.filter((event) => event.date === day.key).length;
+          const active = !showingAll && selectedDate === day.key ? "active" : "";
+          return `<button class="day-button ${active}" data-date="${day.key}" type="button"><span class="day-name">${day.name}</span><span class="day-date">${day.short}</span><span class="day-count">${count ? `${count} 项安排` : "暂无安排"}</span><span class="day-bar"><span style="width:${count / maxCount * 100}%"></span></span></button>`;
+        }).join("") + `<button class="day-button all-day ${showingAll ? "active" : ""}" data-all="true" type="button">查看<br>整周</button>`;
+        document.querySelectorAll("[data-date]").forEach((button) => button.addEventListener("click", () => { showingAll = false; selectedDate = button.dataset.date; render(); }));
+        document.querySelector("[data-all]").addEventListener("click", () => { showingAll = true; render(); });
+      }
+
+      function renderAgenda() {
+        const category = $("categoryFilter").value;
+        const status = $("statusFilter").value;
+        const filtered = events.filter((event) => (!showingAll && event.date !== selectedDate ? false : true)).filter((event) => category === "all" || event.category === category).filter((event) => status === "all" || event.status === status);
+        const grouped = days.map((day) => ({ day, items: filtered.filter((event) => event.date === day.key) })).filter((group) => group.items.length);
+        $("agendaTitle").textContent = showingAll ? "整周安排" : `${dayFor(selectedDate).name}安排`;
+        $("agendaKicker").textContent = showingAll ? `共 ${filtered.length} 项 · 可勾选事项更新完成状态` : `${dayFor(selectedDate).short} · 共 ${filtered.length} 项安排`;
+        if (!filtered.length) { $("agenda").innerHTML = `<div class="empty">当前筛选条件下暂无安排。<br>可以切换日期或清除筛选继续查看。</div>`; return; }
+        $("agenda").innerHTML = grouped.map(({ day, items }) => `<section class="agenda-day"><div class="agenda-day-head"><span class="agenda-day-name">${day.name}</span><span class="agenda-day-date">${day.short}</span></div>${items.map((event) => `<article class="event ${event.status === "已完成" ? "done" : ""}"><div class="time">${event.start}<br><span style="color:var(--muted);font-weight:600">至 ${event.end}</span></div><div><p class="event-title">${event.title}</p><p class="event-location">⌖ ${event.location}</p><div class="event-meta"><span class="tag ${categoryClass[event.category] || ""}">${event.category}</span><span class="tag">${hours(event)} 小时</span><span class="tag">${event.status}</span></div></div><input class="check" type="checkbox" aria-label="标记 ${event.title} 为已完成" data-id="${event.id}" ${event.status === "已完成" ? "checked" : ""}></article>`).join("")}</section>`).join("");
+        document.querySelectorAll("[data-id]").forEach((checkbox) => checkbox.addEventListener("change", () => { const event = events.find((item) => item.id === checkbox.dataset.id); event.status = checkbox.checked ? "已完成" : "待开始"; saveProgress(); renderStats(); renderWeekStrip(); renderAgenda(); showToast(checkbox.checked ? "已标记为完成" : "已恢复为待开始"); }));
+      }
+
+      function render() { renderStats(); renderWeekStrip(); renderAgenda(); }
+      function showToast(message) { const toast = $("toast"); toast.textContent = message; toast.classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1800); }
+      const categories = [...new Set(events.map((event) => event.category))];
+      categories.forEach((category) => $("categoryFilter").insertAdjacentHTML("beforeend", `<option value="${category}">${category}</option>`));
+      $("categoryFilter").addEventListener("change", renderAgenda);
+      $("statusFilter").addEventListener("change", renderAgenda);
+      $("allBtn").addEventListener("click", () => { showingAll = true; render(); });
+      $("printBtn").addEventListener("click", () => window.print());
+      $("resetBtn").addEventListener("click", () => { if (!confirm("确定要清除本机保存的完成进度吗？")) return; events.forEach((event) => event.status = "待开始"); saveProgress(); render(); showToast("进度已重置"); });
+      render();
+    </script>
+  </body>
+</html>
