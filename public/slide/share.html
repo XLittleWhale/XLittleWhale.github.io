@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保研经验分享会（职业生涯规划课纯净打印版）</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 全局平铺与打印级性能重置 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #0b0f19; /* 屏幕浏览时的深暗色背景，烘托卡片感 */
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 视窗平铺容器：屏幕上表现为纵向卡片流，打印时无缝切分 */
+        .viewport {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+            gap: 40px;
+        }
+
+        /* 严格 1280x720 幻灯片核心画布（取消绝对定位，改用标准流平铺） */
+        .slide {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #F8F9FA; /* 象牙白 */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            padding: 60px 90px 80px 90px; 
+            overflow: hidden;
+            flex-shrink: 0;
+            /* 流动线条学术背景纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Cpath d='M-100 200 Q 300 50, 700 400 T 1400 250' fill='none' stroke='rgba(0,63,136,0.035)' stroke-width='4'/%3E%3Cpath d='M-50 450 Q 400 200, 800 600 T 1350 150' fill='none' stroke='rgba(148,7,10,0.025)' stroke-width='3'/%3E%3Cpath d='M100 100 Q 640 500, 1180 100' fill='none' stroke='rgba(0,63,136,0.015)' stroke-width='2' stroke-dasharray='5,5'/%3E%3C/svg%3E");
+        }
+
+        /* 规范化页眉 */
+        .slide-header {
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 6px solid #003F88; /* 浙大蓝 */
+            padding-left: 20px;
+            flex-shrink: 0;
+        }
+        .slide-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: #003F88;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .slide-subtitle {
+            font-size: 15px;
+            color: #94070A; /* 北大红 */
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* 核心内容区 */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            min-height: 0;
+        }
+
+        /* 章节章首页专属样式 */
+        .slide.section-slide {
+            background-color: #003F88;
+            color: #F8F9FA;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720' viewBox='0 0 1280 720'%3E%3Cpath d='M0 720 Q 400 300, 1280 720' fill='none' stroke='rgba(248,249,250,0.04)' stroke-width='5'/%3E%3C/svg%3E");
+        }
+        .section-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 85px;
+            font-weight: 600;
+            color: #94070A;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 54px;
+            font-weight: 900;
+            color: #F8F9FA;
+            margin: 0;
+            letter-spacing: 4px;
+        }
+        .section-desc {
+            font-size: 18px;
+            color: #cbd5e1;
+            margin-top: 20px;
+            font-weight: 300;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        /* 经典两栏排版 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            height: 100%;
+            align-items: center;
+        }
+        .col {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+        }
+
+        /* 三卡片容器 */
+        .tile-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .tile-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 30px rgba(0, 63, 136, 0.03), 0 4px 12px rgba(0,0,0,0.01);
+        }
+        .tile-icon {
+            font-size: 36px;
+            color: #94070A;
+            margin-bottom: 20px;
+        }
+        .tile-title {
+            font-size: 22px;
+            color: #003F88;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+        .tile-text {
+            font-size: 16px;
+            color: #475569;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* 纯净清爽型对比表格 */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,63,136,0.03);
+        }
+        .compare-table th {
+            background-color: #003F88;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 16px;
+            text-align: left;
+            font-size: 17px;
+        }
+        .compare-table td {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+        .compare-table tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        /* 简约时间轴 */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 50px;
+            padding: 0 10px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, #003F88, #94070A);
+            z-index: 1;
+        }
+        .timeline-node {
+            position: relative;
+            z-index: 2;
+            width: 19%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .timeline-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #F8F9FA;
+            border: 4px solid #003F88;
+            margin-bottom: 20px;
+        }
+        .timeline-time {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 22px;
+            color: #94070A;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        .timeline-content {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* 纵向步骤轴（学年规划使用） */
+        .year-roadmap {
+            position: relative;
+            border-left: 3px solid #003F88;
+            margin: 10px 0 0 20px;
+            padding: 0;
+            list-style: none;
+        }
+        .year-node {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 30px;
+        }
+        .year-node::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 4px;
+            background: #F8F9FA;
+            border: 3px solid #94070A;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .year-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 19px;
+            color: #94070A;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+        .year-desc {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* 大数字高亮 */
+        .data-focus {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .data-num {
+            font-size: 32px;
+            font-weight: 800;
+            color: #003F88;
+            font-family: 'Noto Serif SC', serif;
+        }
+        .data-unit {
+            font-size: 24px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        /* 简约列表 */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .bullet-list li {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+            color: #334155;
+            position: relative;
+            padding-left: 30px;
+        }
+        .bullet-list li::before {
+            content: "•";
+            color: #94070A;
+            font-size: 28px;
+            position: absolute;
+            left: 5px;
+            top: -4px;
+        }
+        .placeholder-box {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 25px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 图片排版 */
+        .image-row {
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            width: 100%;
+        }
+        .img-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .slide img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 院校分类独立排版（取消原有的滚动机制，确保PDF不截断） */
+        .category-row-static {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .img-columns-static {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .img-col-item-static {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .img-col-item-static img {
+            max-height: 80px;
+            width: auto;
+        }
+
+        /* PDF 预览器 */
+        .pdf-container {
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1 / 1.25;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,63,136,0.06);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        /* 精致页脚 */
+        .slide-footer {
+            position: absolute;
+            bottom: 35px;
+            left: 90px;
+            right: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        /* 🖨️ 极致 PDF 打印黑魔法控制区 */
+        @page {
+            size: 1280px 720px; /* 声明页面尺寸恰好等于幻灯片大小 */
+            margin: 0;          /* 彻底去掉浏览器默认页眉页脚与留白 */
+        }
+        @media print {
+            html, body {
+                overflow: visible !important;
+                height: auto !important;
+                background-color: #ffffff !important;
+            }
+            .viewport {
+                padding: 0 !important;
+                gap: 0 !important;
+                display: block !important;
+            }
+            .slide {
+                margin: 0 !important;
+                box-shadow: none !important;
+                page-break-after: always !important;   /* 强力指令：每张幻灯片后强制切分新一页 */
+                page-break-inside: avoid !important;  /* 绝不允许幻灯片中途断页 */
+                background-color: #F8F9FA !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important; /* 强制打印背景色块与纹理 */
+            }
+            .slide.section-slide {
+                background-color: #003F88 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewport">
+
+        <div class="slide" style="justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; padding-left: 20px;">
+                <div style="border-left: 10px solid #003F88; padding-left: 40px; max-width: 1200px;">
+                    <h1 style="font-family: 'Noto Serif SC', serif; font-size: 78px; color: #003F88; margin: 0 0 15px 0; line-height: 1.1; font-weight: 900; letter-spacing: 2px;">
+                        保研经验分享会
+                    </h1>
+                    <p style="font-size: 28px; color: #94070A; margin: 0 0 65px 0; font-weight: 500; letter-spacing: 4px;">
+                        ——论如何把握转会窗（）
+                    </p>
+                    <div style="display: flex; gap: 60px; font-size: 18px; color: #475569; font-weight: 400; margin-top: 40px;">
+                        <div><strong style="color: #003F88;">分享人：</strong>徐静远</div>
+                        <div><strong style="color: #003F88;">专业：</strong>竺可桢学院混合班 · 能源与环境系统工程</div>
+                        <div><strong style="color: #003F88;">拟去向：</strong>北京大学工学院直博（流体力学）</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>保研分享会</span>
+                <span>2026 EDITION</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">01</div>
+            <div class="section-title">自我介绍</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">不一定要当数值怪or六边形战士</h2>
+                <span class="slide-subtitle">01 / Introduction</span>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="col" style="justify-content: center;">
+                        <div class="data-focus">
+                            <div class="data-num">专业排名 1</div>
+                            <div class="data-unit">/ 55（均绩4.50）</div>
+                        </div>
+                        <ul class="bullet-list">
+                            <li><strong>学业：</strong>混合排名前30%，国家奖学金*1</li>
+                            <li><strong>竞赛：</strong>全国大学生数学竞赛一等奖、数学建模校赛二等奖、节能减排校赛三等奖</li>
+                            <li><strong>科研：</strong>申请时没有Paper；有一段完整的竺院深度科研项目</li>
+                            <li><strong style="color: #94070A;">大家简历去申请时其实差不多，重点在于怎么在十几分钟里让老师记住你</strong></li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center; align-items: center;">
+                        <div class="pdf-container">
+                            <object data="./5.22/cv_cn.pdf" type="application/pdf" width="100%" height="100%">
+                                <p>您的浏览器不支持直接预览 PDF，请点击 <a href="./5.22/cv_cn.pdf">下载文件</a> 查看。</p>
+                            </object>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第一部分：自我介绍</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">02</div>
+            <div class="section-title">关于直博</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">直博与硕士的区别</h2>
+                <span class="slide-subtitle">02 / Path Choice</span>
+            </div>
+            <div class="slide-body" style="justify-content: center;">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">对比维度</th>
+                            <th style="width: 40%;">直博（本科直博）</th>
+                            <th style="width: 40%;">硕士（学硕/专硕）</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>学位时间</strong></td>
+                            <td>通常 <strong>5年</strong></td>
+                            <td>通常 <strong>2 - 3年</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>主要内容</strong></td>
+                            <td>面向教职/就业的基础与应用研究，主要在写基金，发文章</td>
+                            <td>面向就业or读博前的试水，做偏工程的项目，有机会实习</td>
+                        </tr>
+                        <tr>
+                            <td><strong>生活与待遇</strong></td>
+                            <td>学校和课题组补贴较高，基本cover生活费</td>
+                            <td>基础奖助学金，因学校和课题组而异</td>
+                        </tr>
+                        <tr>
+                            <td><strong>特质需求（不绝对）</strong></td>
+                            <td>数理功底、抗压能力、能不能在冷凳子上坐得住</td>
+                            <td>上手干活的速度、综合全面、模块化完成度</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-footer">
+                <span>第二部分：直博和硕士的区别</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">我为什么选择直博？</h2>
+                <span class="slide-subtitle">02 / Path Choice</span>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2" style="grid-template-columns: 1fr 1fr;">
+                    <div class="col" style="justify-content: center;">
+                        <ul class="bullet-list">
+                            <li><strong>喜欢更底层的推导：</strong>在专业课学习中发现自己更偏好公式背后的物理，而不是单纯的应用层修补。</li>
+                            <li><strong>平台不同：</strong>北大理论流体力学平台底蕴深厚，而浙大相对来说更学科交叉特质更明显</li>
+                            <li><strong>少折腾一年：</strong>5年一贯制省去了硕士毕业考博再转场的时间。</li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center; padding-left: 20px;">
+                        <div style="background: rgba(148, 7, 10, 0.03); border: 1px dashed #94070A; padding: 25px; border-radius: 12px;">
+                            <h4 style="margin: 0 0 10px 0; color: #94070A; font-size: 18px;">💡 个人一点心得体会：</h4>
+                            <p style="font-size: 15px; color: #475569; line-height: 1.7; margin: 0;">
+                                科研是一类面向探索问题、解决问题的<strong>创作型工作</strong>，本质上和作家、音乐家、艺术家等没有太大区别，区别是你的灵感源于“为什么”，而创作源于“答案的揭晓”。你的快乐来自于创作完成后的成就感，痛苦来自于反复的自我否定过程。<br><br>
+
+                                而与作家、音乐家、艺术家相比，还会有书法家、演奏家、画家等<strong>工艺型工作</strong>，这些工作更偏向于“形式”，快乐和痛苦更多来自于“形式的完成度”。<br><br>
+                                
+                                科研中也有很多工艺型的工作，比如实验操作、工程实现、数据分析等，这些工作同样重要，但如果你更喜欢前者的探索性和创造性，那么直博可能会更适合你。
+
+                                
+                             </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第二部分：为什么选直博</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">03</div>
+            <div class="section-title">保研时间线与信息搜集</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">转会窗口全流程</h2>
+                <span class="slide-subtitle">03 / Timeline</span>
+            </div>
+            <div class="slide-body" style="justify-content: space-between;">
+                <div class="timeline">
+                    <div class="timeline-node">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">1 - 3月</div>
+                        <div class="timeline-content">联系+陶瓷导师<br>冬令营/春季营启动（一般是以科研实习形式进行）<br>清华AIR具身智能、上海创智学院等</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">4 - 5月</div>
+                        <div class="timeline-content">主流夏令营网申<br>导师陶瓷黄金期</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">6 - 7月</div>
+                        <div class="timeline-content">预推免报名+夏令营启动<br>第一天开营，后面几天考核（锁定第一批优营offer）<br></div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">8 - 9月</div>
+                        <div class="timeline-content">预推免启动<br>差不多有一半的招收占比，也是滚动补录的好机会</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-time">9.25 +</div>
+                        <div class="timeline-content">研招网正式填报<br>最终系统填报与锁定确认</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 15px; line-height: 1.6; color: #475569;">
+                    <strong style="color: #94070A;">📌 怎么跨保至外校？有哪些学校可以跨保？</strong><br>
+                    <strong>基础背景达标</strong>：大部分申请者的bg都是差不多水平的，只要绩点排名或是荣誉竞赛等到达目标院校的基本要求，就可以大胆申请。<br>
+                    <strong>解决问题能力</strong>：外校老师可能不完全懂你的具体课题，但他们很看重你如何使用你学到的工具去解决问题。<br>
+                    <strong>学校院系匹配</strong>：除了本校，清北人复交、中科院各大研究所、以及各类新型联培和申请制学校，只要学科底层相通，全部都可以去投。
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第三部分：保研时间线</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">打破信息差：多源检索</h2>
+                <span class="slide-subtitle">03 / Channels</span>
+            </div>
+            <div class="slide-body" style="justify-content: center;">
+                <div class="tile-container">
+                    <div class="tile-card">
+                        <div class="tile-icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <h3 class="tile-title">院网与公众号</h3>
+                        <p class="tile-text">浏览各学院官网的公告，关注微信公众号：保研岛，保研夏令营，保研人等。</p>
+                    </div>
+                    <div class="tile-card">
+                        <div class="tile-icon"><i class="fa-solid fa-hashtag" style="color:#FF2442;"></i></div>
+                        <h3 class="tile-title" style="color:#FF2442;">小红书、cc98</h3>
+                        <p class="tile-text">用好小红书和cc98的经验分享。特别是cc98，能看到非常广泛的本校专业保研去向。</p>
+                    </div>
+                    <div class="tile-card">
+                        <div class="tile-icon"><i class="fa-solid fa-network-wired"></i></div>
+                        <h3 class="tile-title">学长学姐、校友Connection</h3>
+                        <p class="tile-text">多去找已经上岸的学长学姐聊天，打听实验室内部的一手消息，Connection非常重要。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第三部分：信息搜集渠道</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">个人的夏令营分类（一）</h2>
+                <span class="slide-subtitle">03 / Target Map</span>
+            </div>
+            <div class="slide-body" style="justify-content: flex-start; gap: 35px;">
+                
+                <div class="category-row-static">
+                    <h3 style="font-size: 18px; color: #94070A; margin: 0; font-weight: bold;">1. 传统学院派</h3>
+                    <p style="font-size: 14px; color: #64748b; margin: 6px 0 12px 0; line-height: 1.5; text-align: left;">
+                        💡 各大高校院系组成的“学部-系-学院”正统架构的招生，通常是对应本专业的学院/系；需要参考不同高校的传统优势专业
+                    </p>
+                    <div class="img-columns-static">
+                        <div class="img-col-item-static">
+                            <img src="./5.22/thu_cs.png" alt="thu_cs" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">计算机系/学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/thu_auto.png" alt="thu_auto" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">自动化系/学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/pku_math.png" alt="pku_math" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">数学系/学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/sjtu_eco.png" alt="sjtu_eco" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">金融/经管/商学院</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-row-static">
+                    <h3 style="font-size: 18px; color: #94070A; margin: 0; font-weight: bold;">2. 新式学院派</h3>
+                    <p style="font-size: 14px; color: #64748b; margin: 6px 0 12px 0; line-height: 1.5; text-align: left;">
+                        💡 高校内近几年刚成立的交叉研究院或前沿学院。经费拉满、年轻老师多，而且更看重交叉学科。适合想跨专业，对交叉感兴趣的同学。
+                    </p>
+                    <div class="img-columns-static">
+                        <div class="img-col-item-static">
+                            <img src="./5.22/thu_ai.png" alt="thu_ai" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">人工智能学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/thu_cross.png" alt="thu_cross" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">交叉信息研究院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/pku_eng.png" alt="pku_eng" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">北大工学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/thu_air.jpg" alt="thu_air" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">智能产业研究院</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="slide-footer">
+                <span>第三部分：信息搜集渠道</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">个人的夏令营分类（二）</h2>
+                <span class="slide-subtitle">03 / Target Map</span>
+            </div>
+            <div class="slide-body" style="justify-content: flex-start; gap: 35px;">
+                
+                <div class="category-row-static">
+                    <h3 style="font-size: 18px; color: #94070A; margin: 0; font-weight: bold;">3. 中科院研究所</h3>
+                    <p style="font-size: 14px; color: #64748b; margin: 6px 0 12px 0; line-height: 1.5; text-align: left;">
+                        💡 国家队，重大专项多，读博工资相对较高，相比高校更像一份工作岗位，适合未来想从事体制内工作的同学。
+                    </p>
+                    <div class="img-columns-static">
+                        <div class="img-col-item-static">
+                            <img src="./5.22/zky_cs.png" alt="zky_cs" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院计算所</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/zky_auto.png" alt="zky_auto" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院自动化所</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/zky_phys.png" alt="zky_phys" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">中科院物理/理论物理所</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-row-static">
+                    <h3 style="font-size: 18px; color: #94070A; margin: 0; font-weight: bold;">4. 产学结合联培与申请制</h3>
+                    <p style="font-size: 14px; color: #64748b; margin: 6px 0 12px 0; line-height: 1.5; text-align: left;">
+                        💡 打破体制的全新玩法，或者是偏国际化的申请制考核。导师指导频率高、研究紧跟业界前沿，适合想尽早接触业界或出国深造的同学。
+                    </p>
+                    <div class="img-columns-static">
+                        <div class="img-col-item-static">
+                            <img src="./5.22/ailab.png" alt="ailab" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">上海AILAB</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/innovation.png" alt="innovation" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">上海创智学院</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/westlake.png" alt="westlake" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">西湖大学夏令营</p>
+                        </div>
+                        <div class="img-col-item-static">
+                            <img src="./5.22/HKU.png" alt="HKU" />
+                            <p style="font-size: 13px; margin: 6px 0 0 0; color: #475569;">港大提前批</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="slide-footer">
+                <span>第三部分：信息搜集渠道</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">04</div>
+            <div class="section-title">大一到大三，需要做哪些准备？</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">分阶段准备指南</h2>
+                <span class="slide-subtitle">04 / Long-term Plan</span>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2" style="grid-template-columns: 1.1fr 0.9fr;">
+                    <div class="col">
+                        <ul class="year-roadmap">
+                            <li class="year-node">
+                                <div class="year-title">大一：巩固数理基础，慢慢积攒信息</div>
+                                <div class="year-desc">数分/微积分、线代、概统——特别是一些定义和重要定理可以之后反复看来加深印象（可以顺手考一下CMC，比较容易获奖）；可以开始尝试搜集对应院校及老师的研究方向、招生要求等信息</div>
+                            </li>
+                            <li class="year-node">
+                                <div class="year-title">大二：尝试科研训练，面向推免加分</div>
+                                <div class="year-desc">非功利地讲，早早进入一个课题组实习跟着一起搬砖能够很快地让你知道整个科研过程以及熟悉该领域的工作，不一定要为了发文章，但是可以尝试完整的做一个工作；如果推免有加分需求，还可以参加一些合作项目类竞赛</div>
+                            </li>
+                            <li class="year-node">
+                                <div class="year-title">大三：开始陶瓷导师，面向面试复习</div>
+                                <div class="year-desc">稳住绩点排名，英语成绩够用。大三春季（3月左右）开始做简历，把大二的科研重塑一下，做成一个5-10页的汇报Slide，就可以开始找外校导师了。</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center; padding-left: 20px;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
+                            <h4 style="margin: 0 0 12px 0; color: #003F88; font-size: 17px;"><i class="fa-solid fa-lightbulb" style="color: #94070A; margin-right: 6px;"></i>Some Tips：</h4>
+                            <p style="font-size: 14px; color: #475569; line-height: 1.7; margin: 0;">
+                                <strong>1. 利用好浙大招牌：</strong>ZJUer输送的生源基本上是TOP1了，所以需要保持自信:）<br><br>
+                                <strong>2. 寻找本校导师的Connection：</strong>浙大很多老师和清华、北大、中科院的导师有联系，争取多和本校老师联系，拿到强推
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第四部分：大一到大三需要做哪些准备</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">05</div>
+            <div class="section-title">陶瓷与面试技巧</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">学术套磁与导师沟通</h2>
+                <span class="slide-subtitle">05 / Cold Emailing</span>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="col" style="justify-content: center;">
+                        <ul class="bullet-list">
+                            <li><strong>邮件：</strong>突出你和导师当前方向的匹配度，千万别写假大空的套话。</li>
+                            <li><strong>附件：</strong>精简的简历、含排名的成绩单、精心做个学术工作汇报Slide（5-10页，是加分项）。</li>
+                            <li><strong>名额：</strong>清北很多老师一年就1-2个名额（还要留一个给本校），需要提前发邮件刺探清楚情况（硕还是博？是否联培？）。</li>
+                            <li><strong>策略：</strong>这是一个互相“养鱼”的博弈，但强导师制的夏令营建议大家拿到口头答应了就别轻易当鸽子，会影响浙大后面学弟学妹的信用。</li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center; align-items: center;">
+                        <div class="placeholder-box" style="width: 100%; border: none; padding: 0;">
+                            <img src="./5.22/email.png" alt="email" style="max-height: 240px; width: auto;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第五部分：陶瓷与面试技巧 (1)</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">案例：北大工学院夏令营</h2>
+                <span class="slide-subtitle">05 / Interview Real Questions</span>
+            </div>
+            <div class="slide-body" style="justify-content: center;">
+                <div class="grid-2">
+                    <div class="col" style="justify-content: center;">
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">流体力学：30min面试</h3>
+                        <ul class="bullet-list" style="font-size:16px;">
+                            <li><strong>英语考核：</strong>5min脱稿自我介绍，随后针对你的科研情况连环追问。</li>
+                            <li><strong>数学考察：</strong>现场白板推导。问了一致收敛、无穷级数判别、积分定义、对称矩阵与正定性的几何意义等。</li>
+                            <li><strong>专业课问题：</strong>想到哪问到哪（主要和你上的教材内容有关）。</li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center;">
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">固体力学：2h笔试+30min带PPT面试</h3>
+                        <ul class="bullet-list" style="font-size:16px;">
+                            <li><strong>笔试考核：</strong>主要考数学，涉及了微积分、线代、复变函数、概率论、ODE+PDE（广度较大）。</li>
+                            <li><strong>英语考核：</strong>5min自我介绍。</li>
+                            <li><strong>科研展示：</strong>用PPT做一个陈述，台下老师针对公式和数据轮番提问。</li>
+                            <li><strong>专业课问题：</strong>依旧是想到哪问到哪。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第五部分：陶瓷与面试技巧 (2)</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">案例：其他</h2>
+                <span class="slide-subtitle">05 / Interview Real Questions</span>
+            </div>
+            <div class="slide-body" style="justify-content: center;">
+                <div class="grid-2">
+                    <div class="col" style="justify-content: center;">
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">北大计算机预推免：2h机试+30min面试</h3>
+                        <ul class="bullet-list" style="font-size:16px;">
+                            <li><strong>机试考核：</strong>打代码，手搓 LeetCode 题</li>
+                            <li><strong>面试考核：</strong>偏压力面，主要问项目和CS基础：现场介绍图灵机模型、推导某深度学习架构的原理等。</li>
+                        </ul>
+                    </div>
+                    <div class="col" style="justify-content: center;">
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">创智学院春季营：笔试+机试+面试</h3>
+                        <ul class="bullet-list" style="font-size:16px;">
+                            <li><strong>笔试机试：</strong>考数学多选题、矩阵概率论、字符串变换代价、递归逻辑等。</li>
+                            <li><strong>实训考核（黑客松）：</strong>和随机匹配的队友组队，完成一道数学建模竞赛题。</li>
+                            <li><strong>面试考核：</strong>PPT做个人学术汇报。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第五部分：陶瓷与面试技巧 (3)</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide section-slide">
+            <div class="section-num">06</div>
+            <div class="section-title">一些可能的问题</div>
+            <div class="section-desc"></div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">还有第二关</h2>
+                <span class="slide-subtitle">06 / Documentation</span>
+            </div>
+            <div class="slide-body" style="justify-content: center;">
+                <div class="grid-2" style="grid-template-columns: 1.1fr 0.9fr;">
+                    <div class="col" style="justify-content: center;">
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">offer拿到前后</h3>
+                        <ul class="bullet-list">
+                            <li><strong>夏令营优营录取：</strong>夏令营结束后1个月内会发布优营公示（准offer）</li>
+                            <li><strong>正式录取：</strong>9月25号以后在国家研招网把它填第一志愿，到时候对面学校系统里给你发录取，你点同意就锁定了。10月份公布所有录取名单</li>
+                            <li><strong>录取后：</strong>一般是大四春学期交调档函、终审成绩单以及体检表，稍微晚于本校保研。</li>
+                        </ul>
+                        <h3 style="color:#003F88; font-size:22px; margin:0 0 15px 0; font-weight: 700;">关于和本校保研的取舍</h3>
+                        <ul class="bullet-list">
+                            <li><strong>本校导师想你保研本校：</strong>本校保研也有很多优点：熟悉的环境（工作、社交、资源）以及zju丰富的交叉学科；需要真诚地和本校老师沟通；如果需要同时参与本校和外校的夏令营/预推免，需要协调好时间</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col" style="justify-content: center; padding-left: 20px;">
+                        <div style="background: #003F88; color: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,63,136,0.15);">
+                            <h4 style="margin: 0 0 12px 0; color: #F8F9FA; font-size: 19px; font-family: 'Noto Serif SC', serif;">最后想跟大家说的：</h4>
+                            <p style="font-size: 14px; color: #cbd5e1; line-height: 1.7; margin: 0;">
+                                做出选择是一个艰难的过程，需要结合自身背景，以及参考他人路径及建议——但最根本的或许还是在于自己的兴趣<br><br>
+                                有可能你会在选择一条路之后，去想如果我选择了另一条路会不会更好并因此感到焦虑——测地线的非唯一性
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>第六部分：资料准备与后续</span>
+                <span>保研分享会</span>
+            </div>
+        </div>
+
+        <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+            <h2 style="font-family: 'Noto Serif SC', serif; font-size: 58px; color: #003F88; margin: 0 0 20px 0; font-weight: 900; letter-spacing: 2px;">
+                交流与答疑
+            </h2>
+            <div style="width: 80px; height: 3px; background-color: #003F88; margin-bottom: 40px;"></div>
+            <p style="font-size: 18px; color: #64748b; margin: 0; font-weight: 500;">
+                分享人：徐静远 | 浙江大学 · 北京大学
+            </p>
+            <div class="slide-footer" style="justify-content: center;">
+                <span>THANK YOU FOR LISTENING</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
