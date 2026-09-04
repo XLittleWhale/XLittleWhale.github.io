@@ -3,397 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101d34" />
-    <meta name="description" content="每周计划" />
-    <title>Whale Week Plan</title>
+    <meta name="theme-color" content="#f8f7f3" />
+    <meta name="description" content="由 Markdown 驱动的一周 PhD 学术计划" />
+    <title>PhD Weekly Plan</title>
     <style>
-      :root {
-        --ink: #172238;
-        --muted: #71809a;
-        --navy: #101d34;
-        --blue: #5b7cfa;
-        --blue-soft: #eef2ff;
-        --paper: #f6f8fc;
-        --card: rgba(255, 255, 255, .92);
-        --line: #e5eaf3;
-        --green: #159a78;
-        --green-soft: #e4f8f0;
-        --amber: #bb7910;
-        --amber-soft: #fff5dc;
-        --purple: #805ad5;
-        --purple-soft: #f1ebff;
-        --shadow: 0 18px 55px rgba(33, 47, 82, .09);
-      }
-
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        min-width: 320px;
-        color: var(--ink);
-        background:
-          radial-gradient(circle at 80% 5%, rgba(91,124,250,.16), transparent 27rem),
-          linear-gradient(135deg, #f7f9fe 0%, #eff3fa 100%);
-        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      }
-
-      button, select { font: inherit; }
-      button { cursor: pointer; }
-      .shell { width: min(1220px, calc(100% - 40px)); margin: 0 auto; padding: 34px 0 56px; }
-      .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
-      .eyebrow { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-      h1 { margin: 8px 0 10px; color: var(--navy); font-size: clamp(30px, 5vw, 54px); letter-spacing: -.055em; line-height: 1; }
-      .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
-      .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 9px; }
-      .action {
-        display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 999px;
-        padding: 10px 15px; color: var(--ink); background: rgba(255,255,255,.75); box-shadow: 0 5px 18px rgba(44,57,91,.04); font-size: 13px; font-weight: 700;
-      }
-      .action:hover { border-color: #bfcbff; color: var(--blue); background: white; }
-      .action.primary { border-color: var(--navy); color: white; background: var(--navy); }
-
-      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; margin-bottom: 24px; }
-      .stat { padding: 17px 19px; border: 1px solid rgba(229,234,243,.9); border-radius: 19px; background: var(--card); box-shadow: var(--shadow); }
-      .stat-label { color: var(--muted); font-size: 12px; font-weight: 700; }
-      .stat-value { margin-top: 8px; color: var(--navy); font-size: 26px; font-weight: 850; letter-spacing: -.04em; }
-      .stat-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
-
-      .week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)) 104px; gap: 8px; padding: 8px; border: 1px solid rgba(229,234,243,.9); border-radius: 20px; background: rgba(255,255,255,.66); box-shadow: var(--shadow); }
-      .day-button { min-height: 83px; border: 1px solid transparent; border-radius: 14px; padding: 12px; color: var(--muted); background: transparent; text-align: left; transition: .2s ease; }
-      .day-button:hover { background: var(--blue-soft); }
-      .day-button.active { border-color: #cfd8ff; color: var(--navy); background: white; box-shadow: 0 9px 22px rgba(84,106,193,.12); }
-      .day-button.all-day { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--blue); background: var(--blue-soft); }
-      .day-name { display: block; font-size: 12px; font-weight: 800; }
-      .day-date { display: block; margin-top: 5px; color: var(--navy); font-size: 21px; font-weight: 850; letter-spacing: -.04em; }
-      .day-count { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
-      .day-bar { display: block; width: 100%; height: 4px; margin-top: 10px; overflow: hidden; border-radius: 10px; background: #edf0f6; }
-      .day-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), #94a8ff); }
-
-      .layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, .75fr); gap: 22px; margin-top: 22px; align-items: start; }
-      .panel { border: 1px solid rgba(229,234,243,.95); border-radius: 22px; background: var(--card); box-shadow: var(--shadow); }
-      .panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 22px 23px 17px; border-bottom: 1px solid var(--line); }
-      .panel-title { margin: 0; color: var(--navy); font-size: 20px; letter-spacing: -.03em; }
-      .panel-kicker { color: var(--muted); font-size: 12px; }
-      .filters { display: flex; flex-wrap: wrap; gap: 8px; }
-      select { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--ink); background: white; font-size: 12px; outline: none; }
-      select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,124,250,.13); }
-      .agenda { padding: 5px 23px 22px; }
-      .agenda-day { padding-top: 16px; }
-      .agenda-day + .agenda-day { margin-top: 9px; border-top: 1px solid var(--line); }
-      .agenda-day-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 7px 0 10px; }
-      .agenda-day-name { font-size: 13px; font-weight: 850; }
-      .agenda-day-date { color: var(--muted); font-size: 12px; }
-      .event { display: grid; grid-template-columns: 84px 1fr auto; gap: 13px; align-items: center; padding: 13px 0; }
-      .event + .event { border-top: 1px dashed #e9edf4; }
-      .time { align-self: start; padding-top: 2px; color: var(--blue); font-size: 13px; font-weight: 850; letter-spacing: -.02em; }
-      .event-title { margin: 0; font-size: 14px; font-weight: 800; line-height: 1.45; }
-      .event-location { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.45; }
-      .event-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-      .edit-event { border: 1px solid #d7defb; border-radius: 999px; padding: 4px 9px; color: var(--blue); background: white; font-size: 11px; font-weight: 800; }
-      .edit-event:hover { border-color: var(--blue); background: var(--blue-soft); }
-      .tag { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 8px; background: var(--blue-soft); color: #4e65c4; font-size: 11px; font-weight: 750; }
-      .tag.green { color: var(--green); background: var(--green-soft); }
-      .tag.amber { color: var(--amber); background: var(--amber-soft); }
-      .tag.purple { color: var(--purple); background: var(--purple-soft); }
-      .check { width: 22px; height: 22px; margin: 0; accent-color: var(--green); }
-      .event.done .event-title, .event.done .event-location { color: #9aa5b7; text-decoration: line-through; }
-      .empty { padding: 40px 14px; color: var(--muted); text-align: center; font-size: 13px; }
-
-      .side { display: grid; gap: 15px; }
-      .side-card { padding: 20px; border: 1px solid rgba(229,234,243,.95); border-radius: 20px; background: var(--card); box-shadow: var(--shadow); }
-      .side-card h2 { margin: 0 0 13px; color: var(--navy); font-size: 15px; letter-spacing: -.02em; }
-      .focus { display: flex; gap: 11px; align-items: flex-start; padding: 11px 0; border-top: 1px solid var(--line); }
-      .focus:first-of-type { border-top: 0; padding-top: 0; }
-      .focus-icon { display: grid; flex: 0 0 31px; height: 31px; place-items: center; border-radius: 10px; color: var(--blue); background: var(--blue-soft); }
-      .focus strong { display: block; font-size: 12px; line-height: 1.45; }
-      .focus span { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.4; }
-      .progress-row { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: var(--muted); font-size: 12px; }
-      .progress-track { height: 9px; overflow: hidden; border-radius: 99px; background: #edf0f6; }
-      .progress-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), #5fd0ac); transition: width .3s ease; }
-      .legend { display: grid; gap: 9px; margin-top: 13px; }
-      .legend-row { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; }
-      .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); }
-      .dot.green { background: var(--green); }
-      .dot.amber { background: var(--amber); }
-      .dot.purple { background: var(--purple); }
-      .footnote { margin: 24px 3px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
-      .toast { position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translate(-50%, 18px); opacity: 0; pointer-events: none; border-radius: 999px; padding: 11px 15px; color: white; background: var(--navy); box-shadow: 0 12px 34px rgba(16,29,52,.24); font-size: 12px; transition: .22s ease; }
-      .toast.show { transform: translate(-50%, 0); opacity: 1; }
-      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-      .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(16,29,52,.48); backdrop-filter: blur(8px); }
-      .modal-backdrop[hidden] { display: none; }
-      .editor-panel { width: min(640px, 100%); max-height: min(760px, calc(100vh - 40px)); overflow: auto; border: 1px solid rgba(255,255,255,.6); border-radius: 24px; background: white; box-shadow: 0 30px 90px rgba(16,29,52,.25); }
-      .editor-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 24px 16px; border-bottom: 1px solid var(--line); }
-      .editor-head h2 { margin: 0; color: var(--navy); font-size: 20px; }
-      .modal-close { width: 32px; height: 32px; border: 0; border-radius: 50%; color: var(--muted); background: var(--paper); font-size: 20px; }
-      .editor-form { padding: 20px 24px 24px; }
-      .editor-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
-      .field { display: grid; gap: 6px; }
-      .field.full { grid-column: 1 / -1; }
-      .field label { color: var(--muted); font-size: 12px; font-weight: 800; }
-      .field input, .field select { width: 100%; border: 1px solid var(--line); border-radius: 11px; padding: 11px 12px; color: var(--ink); background: #fbfcff; outline: none; }
-      .field input:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,124,250,.13); background: white; }
-      .editor-hint { margin: 15px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
-      .editor-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 21px; }
-      .editor-actions-right { display: flex; gap: 9px; }
-      .modal-action { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; color: var(--ink); background: white; font-size: 12px; font-weight: 800; }
-      .modal-action.primary { border-color: var(--navy); color: white; background: var(--navy); }
-      .modal-action.danger { color: #aa4a4a; }
-
-      @media (max-width: 860px) {
-        .topbar { flex-direction: column; }
-        .actions { justify-content: flex-start; }
-        .stats { grid-template-columns: repeat(2, 1fr); }
-        .week-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .day-button.all-day { grid-column: span 4; }
-        .layout { grid-template-columns: 1fr; }
-      }
-      @media (max-width: 560px) {
-        .shell { width: min(100% - 24px, 1220px); padding-top: 24px; }
-        h1 { font-size: 37px; }
-        .stats { gap: 8px; }
-        .stat { padding: 14px; }
-        .stat-value { font-size: 22px; }
-        .week-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .day-button.all-day { grid-column: span 2; min-height: 58px; }
-        .panel-head { align-items: flex-start; padding: 18px 16px 14px; }
-        .agenda { padding-left: 16px; padding-right: 16px; }
-        .event { grid-template-columns: 68px 1fr auto; gap: 9px; }
-        .time { font-size: 12px; }
-        .event-title { font-size: 13px; }
-        .editor-grid { grid-template-columns: 1fr; }
-        .field.full { grid-column: auto; }
-        .editor-head, .editor-form { padding-left: 18px; padding-right: 18px; }
-      }
-      @media print {
-        body { background: white; }
-        .shell { width: 100%; padding: 10px 0; }
-        .actions, .filters, .week-strip, .side, .footnote, .toast { display: none !important; }
-        .layout { display: block; margin-top: 0; }
-        .panel { border: 0; box-shadow: none; }
-        .agenda { padding-bottom: 0; }
-      }
+      :root { --ink:#24302b; --muted:#7d8780; --line:#e7e6df; --paper:#f8f7f3; --card:#fffefa; --accent:#537968; --warm:#a66f4e; --shadow:0 18px 55px rgba(55,63,56,.06); }
+      * { box-sizing:border-box; }
+      body { margin:0; min-width:320px; color:var(--ink); background:var(--paper); font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+      .shell { width:min(1180px,calc(100% - 44px)); margin:auto; padding:58px 0 76px; }
+      .hero { display:flex; justify-content:space-between; align-items:flex-end; gap:28px; padding-bottom:38px; border-bottom:1px solid var(--line); }
+      .eyebrow { color:var(--accent); font-size:11px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+      h1 { margin:12px 0 10px; max-width:780px; font-size:clamp(34px,6vw,68px); line-height:1.03; letter-spacing:-.065em; font-weight:800; }
+      .intro { margin:0; color:var(--muted); font-size:14px; line-height:1.8; }
+      .actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+      button { border:1px solid var(--line); border-radius:999px; padding:10px 14px; color:var(--ink); background:var(--card); font:inherit; font-size:12px; font-weight:750; cursor:pointer; }
+      button:hover { border-color:var(--accent); color:var(--accent); }
+      .status { display:none; margin:24px 0 0; padding:16px 18px; border:1px solid var(--line); border-radius:14px; color:var(--muted); background:var(--card); line-height:1.7; }
+      .status.show { display:block; }
+      .overview { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:14px; margin:24px 0 14px; }
+      .block, .day-card { min-width:0; padding:24px; border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:var(--shadow); }
+      .block h2, .day-card h2 { margin:0 0 15px; font-size:16px; letter-spacing:-.025em; }
+      .block h2::before, .day-card h2::before { display:inline-block; width:6px; height:6px; margin:0 8px 3px 0; border-radius:50%; background:var(--accent); content:""; }
+      .block.warm h2::before { background:var(--warm); }
+      .markdown { color:#4d5952; font-size:13px; line-height:1.8; overflow-wrap:anywhere; }
+      .markdown p { margin:0 0 10px; }
+      .markdown p:last-child { margin-bottom:0; }
+      .markdown ul { margin:8px 0 0; padding-left:20px; }
+      .markdown li { margin:5px 0; }
+      .markdown li.task { list-style:none; margin-left:-20px; }
+      .markdown input[type=checkbox] { margin-right:8px; accent-color:var(--accent); vertical-align:-1px; }
+      .markdown strong { color:var(--ink); font-weight:750; }
+      .markdown em { color:var(--warm); }
+      .markdown code { padding:2px 5px; border-radius:5px; background:#f0f1ec; font-size:.9em; }
+      .markdown a { color:var(--accent); }
+      .day-card { padding:0; overflow:hidden; }
+      .days { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:14px; margin-top:14px; }
+      .day-head { display:flex; justify-content:space-between; gap:14px; padding:21px 24px 16px; border-bottom:1px solid var(--line); }
+      .day-head h2 { margin:0; }
+      .day-date { color:var(--muted); font-size:12px; white-space:nowrap; }
+      .day-body { padding:17px 24px 22px; }
+      .day-body:empty::after { color:var(--muted); content:"暂无安排"; font-size:13px; }
+      .footer { display:flex; justify-content:space-between; gap:18px; margin-top:20px; color:var(--muted); font-size:11px; line-height:1.7; }
+      .footer a { color:var(--accent); }
+      @media (max-width:760px) { .shell{width:min(100% - 26px,1180px);padding:30px 0 48px}.hero{display:block;padding-bottom:27px}.actions{justify-content:flex-start;margin-top:22px}.overview{grid-template-columns:1fr}.block{padding:20px}.days{grid-template-columns:1fr}.footer{display:block}.footer span{display:block;margin-top:8px} }
+      @media print { .shell{width:100%;padding:0}.hero{padding:18px 0}.actions,.footer a{display:none}.block,.day-card{box-shadow:none;break-inside:avoid}.days{grid-template-columns:repeat(2,1fr)} }
     </style>
   </head>
   <body>
     <main class="shell">
-      <header class="topbar">
-        <div>
-          <div class="eyebrow">ACADEMIC WELCOME WEEK · 2026</div>
-          <h1>迎新周计划</h1>
-          <p class="subtitle">2026.08.31 周一 — 2026.09.06 周日 · 学术型学位研究生</p>
-        </div>
-        <div class="actions">
-          <button class="action" id="printBtn" type="button">⌁ 打印计划</button>
-          <button class="action" id="resetBtn" type="button">↻ 重置进度</button>
-          <button class="action" id="addBtn" type="button">＋ 添加 event</button>
-          <button class="action primary" id="allBtn" type="button">查看整周</button>
-        </div>
-      </header>
-
-      <section class="stats" aria-label="计划概览">
-        <div class="stat"><div class="stat-label">本周安排</div><div class="stat-value" id="statTotal">—</div><div class="stat-note">项迎新活动</div></div>
-        <div class="stat"><div class="stat-label">活动天数</div><div class="stat-value" id="statDays">—</div><div class="stat-note">天有安排</div></div>
-        <div class="stat"><div class="stat-label">预计总时长</div><div class="stat-value" id="statHours">—</div><div class="stat-note">小时</div></div>
-        <div class="stat"><div class="stat-label">完成进度</div><div class="stat-value" id="statDone">—</div><div class="stat-note" id="statDoneNote">已完成</div></div>
-      </section>
-
-      <nav class="week-strip" id="weekStrip" aria-label="选择日期"></nav>
-
-      <div class="layout">
-        <section class="panel" aria-labelledby="agendaTitle">
-          <div class="panel-head">
-            <div>
-              <h2 class="panel-title" id="agendaTitle">今日安排</h2>
-              <div class="panel-kicker" id="agendaKicker">点击上方日期切换视图</div>
-            </div>
-            <div class="filters">
-              <label><span class="sr-only">按类别筛选</span><select id="categoryFilter"><option value="all">全部类别</option></select></label>
-              <label><span class="sr-only">按状态筛选</span><select id="statusFilter"><option value="all">全部状态</option><option value="待开始">待开始</option><option value="已完成">已完成</option></select></label>
-            </div>
-          </div>
-          <div class="agenda" id="agenda"></div>
-        </section>
-
-        <aside class="side">
-          <section class="side-card">
-            <h2>本周焦点</h2>
-            <div class="focus"><div class="focus-icon">01</div><div><strong>周一 · 报到与图像采集</strong><span>8:30–17:00 · 新奥工学大楼 / 新太阳学生活动中心</span></div></div>
-            <div class="focus"><div class="focus-icon">02</div><div><strong>周二 · 集中教育与安全讲座</strong><span>8:30–20:30 · 新奥 3004 报告厅</span></div></div>
-            <div class="focus"><div class="focus-icon">03</div><div><strong>周五 · 学校开学典礼</strong><span>8:00–10:00 · 五四体育场</span></div></div>
-          </section>
-          <section class="side-card">
-            <h2>完成进度</h2>
-            <div class="progress-row"><span id="progressLabel">0 / 14 项</span><strong id="progressPercent">0%</strong></div>
-            <div class="progress-track"><span id="progressBar" style="width:0%"></span></div>
-            <div class="legend">
-              <div class="legend-row"><i class="dot"></i>讲座 / 教育</div>
-              <div class="legend-row"><i class="dot green"></i>办理 / 体检</div>
-              <div class="legend-row"><i class="dot amber"></i>典礼 / 重要节点</div>
-              <div class="legend-row"><i class="dot purple"></i>会议 / 班会</div>
-            </div>
-          </section>
-          <p class="footnote">勾选事项后，完成状态会保存在当前浏览器中。要长期修改安排，请直接编辑本页面中的活动数据，再推送到网站仓库即可。</p>
-        </aside>
-      </div>
+      <header class="hero"><div><div class="eyebrow">PHD ACADEMIC PLANNER</div><h1 id="title">一周学术计划</h1><p class="intro" id="subtitle">正在读取 Markdown 计划……</p></div><div class="actions"><button id="printBtn" type="button">打印 / 导出 PDF</button><button id="reloadBtn" type="button">重新读取</button></div></header>
+      <div class="status" id="status" role="status"></div>
+      <section class="overview" aria-label="计划概览"><article class="block"><h2>本周总工作任务</h2><div class="markdown" id="summary"></div></article><article class="block warm"><h2>文献阅读任务</h2><div class="markdown" id="reading"></div></article><article class="block"><h2>本周节奏</h2><div class="markdown" id="goals"></div></article></section>
+      <section class="days" id="days" aria-label="每日安排"></section>
+      <footer class="footer"><span id="sourceNote">来源：weekly-plan.md</span><a href="?file=weekly-plan.md">加载默认计划</a></footer>
     </main>
-    <div class="modal-backdrop" id="editorBackdrop" hidden>
-      <section class="editor-panel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
-        <div class="editor-head">
-          <h2 id="editorTitle">编辑每日 event</h2>
-          <button class="modal-close" id="closeEditor" type="button" aria-label="关闭编辑器">×</button>
-        </div>
-        <form class="editor-form" id="eventForm">
-          <input id="eventId" type="hidden" />
-          <div class="editor-grid">
-            <div class="field full"><label for="eventTitle">事件名称</label><input id="eventTitle" required placeholder="例如：组会 / 新生报到" /></div>
-            <div class="field"><label for="eventDate">日期</label><input id="eventDate" type="date" required /></div>
-            <div class="field"><label for="eventCategory">类别</label><select id="eventCategory"><option>迎新</option><option>办理</option><option>讲座</option><option>会议</option><option>体检</option><option>典礼</option><option>其他</option></select></div>
-            <div class="field"><label for="eventStart">开始时间</label><input id="eventStart" type="time" required /></div>
-            <div class="field"><label for="eventEnd">结束时间</label><input id="eventEnd" type="time" required /></div>
-            <div class="field full"><label for="eventLocation">地点及相关安排</label><input id="eventLocation" placeholder="例如：新奥 3004 报告厅" /></div>
-            <div class="field"><label for="eventStatus">状态</label><select id="eventStatus"><option>待开始</option><option>进行中</option><option>已完成</option><option>已取消</option></select></div>
-          </div>
-          <p class="editor-hint">保存后会立即更新页面，并保存在当前浏览器中。静态 GitHub Pages 页面不会自动把编辑内容写回 GitHub 仓库。</p>
-          <div class="editor-actions"><button class="modal-action danger" id="deleteEvent" type="button" hidden>删除事件</button><div class="editor-actions-right"><button class="modal-action" id="cancelEditor" type="button">取消</button><button class="modal-action primary" type="submit">保存事件</button></div></div>
-        </form>
-      </section>
-    </div>
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
     <script>
-      const days = [
-        { key: "2026-08-31", name: "周一", short: "8/31" },
-        { key: "2026-09-01", name: "周二", short: "9/1" },
-        { key: "2026-09-02", name: "周三", short: "9/2" },
-        { key: "2026-09-03", name: "周四", short: "9/3" },
-        { key: "2026-09-04", name: "周五", short: "9/4" },
-        { key: "2026-09-05", name: "周六", short: "9/5" },
-        { key: "2026-09-06", name: "周日", short: "9/6" },
-      ];
-
-      const defaultEvents = [
-        ["2026-08-31", "08:30", "15:00", "新生报到", "新奥工学大楼1楼西门厅", "迎新"],
-        ["2026-08-31", "09:00", "17:00", "新生图像采集", "新太阳学生活动中心105、106事务中心大厅", "办理"],
-        ["2026-09-01", "08:30", "10:00", "新生入学教育会", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "10:00", "11:00", "学院学工组招新宣讲", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "11:00", "11:30", "新生心理工作坊—心理中心咨询师带领", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "14:00", "15:00", "防诈安全讲座—派出所", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "15:00", "16:00", "网络安全讲座—青年研究中心", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "16:00", "17:00", "实验室安全讲座—科研部", "新奥3004报告厅", "讲座"],
-        ["2026-09-01", "18:00", "20:30", "新生班会—各班自行组织", "新奥1006、1007、1050会议室", "会议"],
-        ["2026-09-02", "09:00", "11:00", "学校新生第一课", "新奥3004报告厅", "讲座"],
-        ["2026-09-02", "14:00", "17:00", "学术型研究生培养说明会—教务李曼老师", "新奥3004报告厅", "讲座"],
-        ["2026-09-03", "09:00", "10:00", "新生体检及免疫接种", "校医院", "体检"],
-        ["2026-09-04", "08:00", "10:00", "学校开学典礼", "五四体育场", "典礼"],
-        ["2026-09-05", "08:30", "10:30", "学院开学礼", "新奥3004报告厅", "典礼"],
-      ].map(([date, start, end, title, location, category], index) => ({ id: `event-${index + 1}`, date, start, end, title, location, category, status: "待开始" }));
-
-      const storageKey = "xlittlewhale-welcome-week-2026-08-31-events";
-      const oldProgressKey = "xlittlewhale-welcome-week-2026-08-31";
-      const storedEvents = JSON.parse(localStorage.getItem(storageKey) || "null");
-      const events = Array.isArray(storedEvents) ? storedEvents : defaultEvents;
-      if (!storedEvents) {
-        const oldProgress = JSON.parse(localStorage.getItem(oldProgressKey) || "{}");
-        events.forEach((event) => { if (oldProgress[event.id]) event.status = oldProgress[event.id]; });
-      }
-
-      let selectedDate = "2026-08-31";
-      let showingAll = false;
-      const $ = (id) => document.getElementById(id);
-      const categoryClass = { 讲座: "", 办理: "green", 体检: "green", 典礼: "amber", 会议: "purple", 迎新: "" };
-      const dayFor = (date) => days.find((day) => day.key === date);
-      const hours = (event) => ((new Date(`1970-01-01T${event.end}:00`) - new Date(`1970-01-01T${event.start}:00`)) / 3600000).toFixed(1);
-
-      function saveEvents() {
-        localStorage.setItem(storageKey, JSON.stringify(events));
-      }
-
-      function renderStats() {
-        const done = events.filter((event) => event.status === "已完成").length;
-        const activeDays = new Set(events.map((event) => event.date)).size;
-        const totalHours = events.reduce((sum, event) => sum + Number(hours(event)), 0).toFixed(1);
-        $("statTotal").textContent = events.length;
-        $("statDays").textContent = activeDays;
-        $("statHours").textContent = totalHours;
-        $("statDone").textContent = `${done}/${events.length}`;
-        $("statDoneNote").textContent = done ? `已完成 ${Math.round(done / events.length * 100)}%` : "尚未完成";
-        $("progressLabel").textContent = `${done} / ${events.length} 项`;
-        $("progressPercent").textContent = `${Math.round(done / events.length * 100)}%`;
-        $("progressBar").style.width = `${done / events.length * 100}%`;
-      }
-
-      function renderWeekStrip() {
-        const maxCount = Math.max(...days.map((day) => events.filter((event) => event.date === day.key).length), 1);
-        $("weekStrip").innerHTML = days.map((day) => {
-          const count = events.filter((event) => event.date === day.key).length;
-          const active = !showingAll && selectedDate === day.key ? "active" : "";
-          return `<button class="day-button ${active}" data-date="${day.key}" type="button"><span class="day-name">${day.name}</span><span class="day-date">${day.short}</span><span class="day-count">${count ? `${count} 项安排` : "暂无安排"}</span><span class="day-bar"><span style="width:${count / maxCount * 100}%"></span></span></button>`;
-        }).join("") + `<button class="day-button all-day ${showingAll ? "active" : ""}" data-all="true" type="button">查看<br>整周</button>`;
-        document.querySelectorAll("[data-date]").forEach((button) => button.addEventListener("click", () => { showingAll = false; selectedDate = button.dataset.date; render(); }));
-        document.querySelector("[data-all]").addEventListener("click", () => { showingAll = true; render(); });
-      }
-
-      function renderAgenda() {
-        const category = $("categoryFilter").value;
-        const status = $("statusFilter").value;
-        const filtered = events.filter((event) => (!showingAll && event.date !== selectedDate ? false : true)).filter((event) => category === "all" || event.category === category).filter((event) => status === "all" || event.status === status).sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
-        const grouped = days.map((day) => ({ day, items: filtered.filter((event) => event.date === day.key) })).filter((group) => group.items.length);
-        $("agendaTitle").textContent = showingAll ? "整周安排" : `${dayFor(selectedDate).name}安排`;
-        $("agendaKicker").textContent = showingAll ? `共 ${filtered.length} 项 · 可勾选事项更新完成状态` : `${dayFor(selectedDate).short} · 共 ${filtered.length} 项安排`;
-        if (!filtered.length) { $("agenda").innerHTML = `<div class="empty">当前筛选条件下暂无安排。<br>可以切换日期或清除筛选继续查看。</div>`; return; }
-        const safe = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
-        $("agenda").innerHTML = grouped.map(({ day, items }) => `<section class="agenda-day"><div class="agenda-day-head"><span class="agenda-day-name">${day.name}</span><span class="agenda-day-date">${day.short}</span></div>${items.map((event) => `<article class="event ${event.status === "已完成" ? "done" : ""}"><div class="time">${safe(event.start)}<br><span style="color:var(--muted);font-weight:600">至 ${safe(event.end)}</span></div><div><p class="event-title">${safe(event.title)}</p><p class="event-location">⌖ ${safe(event.location)}</p><div class="event-meta"><span class="tag ${categoryClass[event.category] || ""}">${safe(event.category)}</span><span class="tag">${hours(event)} 小时</span><span class="tag">${safe(event.status)}</span><button class="edit-event" type="button" data-edit="${event.id}">编辑</button></div></div><input class="check" type="checkbox" aria-label="标记 ${safe(event.title)} 为已完成" data-id="${event.id}" ${event.status === "已完成" ? "checked" : ""}></article>`).join("")}</section>`).join("");
-        document.querySelectorAll("[data-id]").forEach((checkbox) => checkbox.addEventListener("change", () => { const event = events.find((item) => item.id === checkbox.dataset.id); event.status = checkbox.checked ? "已完成" : "待开始"; saveEvents(); renderStats(); renderWeekStrip(); renderAgenda(); showToast(checkbox.checked ? "已标记为完成" : "已恢复为待开始"); }));
-        document.querySelectorAll("[data-edit]").forEach((button) => button.addEventListener("click", () => openEditor(button.dataset.edit)));
-      }
-
-      function render() { renderStats(); renderWeekStrip(); renderAgenda(); }
-      function showToast(message) { const toast = $("toast"); toast.textContent = message; toast.classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1800); }
-      function openEditor(eventId = "") {
-        const event = events.find((item) => item.id === eventId);
-        $("eventId").value = event?.id || "";
-        $("eventTitle").value = event?.title || "";
-        $("eventDate").value = event?.date || (showingAll ? days[0].key : selectedDate);
-        $("eventStart").value = event?.start || "09:00";
-        $("eventEnd").value = event?.end || "10:00";
-        $("eventLocation").value = event?.location || "";
-        $("eventCategory").value = event?.category || "其他";
-        $("eventStatus").value = event?.status || "待开始";
-        $("editorTitle").textContent = event ? "编辑每日 event" : "添加每日 event";
-        $("deleteEvent").hidden = !event;
-        $("editorBackdrop").hidden = false;
-        document.body.style.overflow = "hidden";
-        setTimeout(() => $("eventTitle").focus(), 0);
-      }
-      function closeEditor() { $("editorBackdrop").hidden = true; document.body.style.overflow = ""; }
-      $("eventForm").addEventListener("submit", (submitEvent) => {
-        submitEvent.preventDefault();
-        const id = $("eventId").value;
-        const payload = { date: $("eventDate").value, start: $("eventStart").value, end: $("eventEnd").value, title: $("eventTitle").value.trim(), location: $("eventLocation").value.trim() || "待补充", category: $("eventCategory").value, status: $("eventStatus").value };
-        if (!payload.title || !payload.date || !payload.start || !payload.end) return;
-        if (id) Object.assign(events.find((item) => item.id === id), payload);
-        else events.push({ id: `event-${Date.now()}`, ...payload });
-        saveEvents(); closeEditor(); render(); showToast(id ? "事件已更新" : "事件已添加");
-      });
-      $("deleteEvent").addEventListener("click", () => {
-        const id = $("eventId").value;
-        if (!id || !confirm("确定要删除这个事件吗？")) return;
-        const index = events.findIndex((item) => item.id === id);
-        if (index >= 0) events.splice(index, 1);
-        saveEvents(); closeEditor(); render(); showToast("事件已删除");
-      });
-      $("closeEditor").addEventListener("click", closeEditor);
-      $("cancelEditor").addEventListener("click", closeEditor);
-      $("editorBackdrop").addEventListener("click", (clickEvent) => { if (clickEvent.target === $("editorBackdrop")) closeEditor(); });
-      $("addBtn").addEventListener("click", () => openEditor());
-      const categories = ["迎新", "办理", "讲座", "会议", "体检", "典礼", "其他"];
-      categories.forEach((category) => $("categoryFilter").insertAdjacentHTML("beforeend", `<option value="${category}">${category}</option>`));
-      $("categoryFilter").addEventListener("change", renderAgenda);
-      $("statusFilter").addEventListener("change", renderAgenda);
-      $("allBtn").addEventListener("click", () => { showingAll = true; render(); });
-      $("printBtn").addEventListener("click", () => window.print());
-      $("resetBtn").addEventListener("click", () => { if (!confirm("确定要清除本机保存的完成进度吗？")) return; events.forEach((event) => event.status = "待开始"); saveEvents(); render(); showToast("进度已重置"); });
-      render();
+      const defaultFile="weekly-plan.md", file=new URLSearchParams(location.search).get("file")||defaultFile, $=id=>document.getElementById(id);
+      const escapeHtml=value=>String(value??"").replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
+      function inline(text){return escapeHtml(text).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/__([^_]+)__/g,"<strong>$1</strong>").replace(/\*([^*]+)\*/g,"<em>$1</em>").replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noreferrer">$1</a>');}
+      function markdown(text){const lines=text.trim().split(/\r?\n/),out=[];let list=false;const close=()=>{if(list){out.push("</ul>");list=false;}};lines.forEach(line=>{const s=line.trim();if(!s){close();return;}const task=s.match(/^[-*+] \[([ xX])\] (.+)$/),bullet=s.match(/^[-*+] (.+)$/);if(task||bullet){if(!list){out.push("<ul>");list=true;}out.push(`<li class="${task?"task":""}">${task?`<label><input type="checkbox" ${task[1].toLowerCase()==="x"?"checked":""} disabled>${inline(task[2])}</label>`:inline(bullet[1])}</li>`);return;}close();if(/^### /.test(s))out.push(`<h3>${inline(s.slice(4))}</h3>`);else if(/^> /.test(s))out.push(`<p>${inline(s.slice(2))}</p>`);else out.push(`<p>${inline(s)}</p>`);});close();return out.join("");}
+      function parsePlan(source){const lines=source.split(/\r?\n/),plan={title:"一周学术计划",subtitle:"",summary:[],reading:[],goals:[],notes:[],days:[]};let section="",current=null;lines.forEach(raw=>{const line=raw.trim();if(!line)return;if(/^# /.test(line)){plan.title=line.slice(2).trim();return;}if(/^> /.test(line)){plan.subtitle=line.slice(2).trim();return;}const day=line.match(/^##\s*(周一|周二|周三|周四|周五|周六|周日)(?:\s*[·|｜-]\s*(.*))?$/);if(day){current={name:day[1],date:day[2]||"",lines:[]};plan.days.push(current);section="day";return;}if(/^## /.test(line)){section=line.slice(3).replace(/[：:]$/g,"").trim();current=null;return;}if(current&&section==="day")current.lines.push(line);else if(/总工作任务|本周任务|研究任务/.test(section))plan.summary.push(line);else if(/文献阅读|阅读任务|论文阅读/.test(section))plan.reading.push(line);else if(/节奏|目标|里程碑|优先/.test(section))plan.goals.push(line);else if(/备注|提醒|注意/.test(section))plan.notes.push(line);});return plan;}
+      function render(plan){$("title").textContent=plan.title;$("subtitle").textContent=plan.subtitle||"一周 PhD 学术安排 · 由 Markdown 文档驱动";$("summary").innerHTML=markdown(plan.summary.join("\n"))||"<p>暂无内容</p>";$("reading").innerHTML=markdown(plan.reading.join("\n"))||"<p>暂无内容</p>";$("goals").innerHTML=markdown(plan.goals.join("\n"))||markdown(plan.notes.join("\n"))||"<p>暂无内容</p>";$("days").innerHTML=plan.days.map(day=>`<article class="day-card"><div class="day-head"><h2>${escapeHtml(day.name)}</h2><span class="day-date">${escapeHtml(day.date)}</span></div><div class="day-body markdown">${markdown(day.lines.join("\n"))}</div></article>`).join("")||"<article class=\"block\"><div class=\"markdown\">未找到每日安排，请检查 Markdown 中是否使用“## 周一”至“## 周日”标题。</div></article>";$("sourceNote").textContent=`来源：${file}`;}
+      async function load(){$("status").classList.remove("show");try{const response=await fetch(`./${encodeURIComponent(file).replace(/%2F/g,"/")}`,{cache:"no-store"});if(!response.ok)throw new Error(`无法读取 ${file}（${response.status}）`);render(parsePlan(await response.text()));}catch(error){$("status").textContent=`读取失败：${error.message}。请确认 Markdown 文件与 index.html 位于同一目录，并通过本地服务器或 GitHub Pages 访问。`;$("status").classList.add("show");}}
+      $("printBtn").addEventListener("click",()=>window.print());$("reloadBtn").addEventListener("click",load);load();
     </script>
   </body>
 </html>
