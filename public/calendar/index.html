@@ -20,7 +20,17 @@
       button:hover { border-color:var(--accent); color:var(--accent); }
       .status { display:none; margin:24px 0 0; padding:16px 18px; border:1px solid var(--line); border-radius:14px; color:var(--muted); background:var(--card); line-height:1.7; }
       .status.show { display:block; }
-      .overview { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:14px; margin:24px 0 14px; }
+      .tabs { display:flex; gap:10px; margin-top:24px; padding:6px; border:1px solid var(--line); border-radius:16px; background:#f0f0ea; }
+      .tab { flex:1; border:0; border-radius:11px; padding:14px 18px; color:var(--muted); background:transparent; text-align:left; transition:.2s ease; }
+      .tab strong { display:block; color:inherit; font-size:14px; }
+      .tab span { display:block; margin-top:3px; color:inherit; font-size:11px; font-weight:500; opacity:.8; }
+      .tab:hover { color:var(--ink); border-color:transparent; background:#fafaf7; }
+      .tab.active { color:var(--ink); background:var(--card); box-shadow:0 6px 20px rgba(55,63,56,.08); }
+      .tab.active:first-child { color:var(--accent); }
+      .tab.active:last-child { color:var(--warm); }
+      .tab-panel { margin-top:14px; }
+      .tab-panel[hidden] { display:none; }
+      .overview { display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:14px; }
       .block, .day-card { min-width:0; padding:24px; border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:var(--shadow); }
       .block h2, .day-card h2 { margin:0 0 15px; font-size:16px; letter-spacing:-.025em; }
       .block h2::before, .day-card h2::before { display:inline-block; width:6px; height:6px; margin:0 8px 3px 0; border-radius:50%; background:var(--accent); content:""; }
@@ -37,7 +47,7 @@
       .markdown code { padding:2px 5px; border-radius:5px; background:#f0f1ec; font-size:.9em; }
       .markdown a { color:var(--accent); }
       .day-card { padding:0; overflow:hidden; }
-      .days { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:14px; margin-top:14px; }
+      .days { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:14px; }
       .day-head { display:flex; justify-content:space-between; gap:14px; padding:21px 24px 16px; border-bottom:1px solid var(--line); }
       .day-head h2 { margin:0; }
       .day-date { color:var(--muted); font-size:12px; white-space:nowrap; }
@@ -45,16 +55,17 @@
       .day-body:empty::after { color:var(--muted); content:"暂无安排"; font-size:13px; }
       .footer { display:flex; justify-content:space-between; gap:18px; margin-top:20px; color:var(--muted); font-size:11px; line-height:1.7; }
       .footer a { color:var(--accent); }
-      @media (max-width:760px) { .shell{width:min(100% - 26px,1180px);padding:30px 0 48px}.hero{display:block;padding-bottom:27px}.actions{justify-content:flex-start;margin-top:22px}.overview{grid-template-columns:1fr}.block{padding:20px}.days{grid-template-columns:1fr}.footer{display:block}.footer span{display:block;margin-top:8px} }
-      @media print { .shell{width:100%;padding:0}.hero{padding:18px 0}.actions,.footer a{display:none}.block,.day-card{box-shadow:none;break-inside:avoid}.days{grid-template-columns:repeat(2,1fr)} }
+      @media (max-width:760px) { .shell{width:min(100% - 26px,1180px);padding:30px 0 48px}.hero{display:block;padding-bottom:27px}.actions{justify-content:flex-start;margin-top:22px}.tabs{gap:5px}.tab{padding:12px 13px}.tab span{font-size:10px}.overview{grid-template-columns:1fr}.block{padding:20px}.days{grid-template-columns:1fr}.footer{display:block}.footer span{display:block;margin-top:8px} }
+      @media print { .shell{width:100%;padding:0}.hero{padding:18px 0}.actions,.tabs,.footer a{display:none}.tab-panel{display:block!important}.block,.day-card{box-shadow:none;break-inside:avoid}.days{grid-template-columns:repeat(2,1fr)} }
     </style>
   </head>
   <body>
     <main class="shell">
       <header class="hero"><div><div class="eyebrow">PHD ACADEMIC PLANNER</div><h1 id="title">一周学术计划</h1><p class="intro" id="subtitle">正在读取 Markdown 计划……</p></div><div class="actions"><button id="printBtn" type="button">打印 / 导出 PDF</button><button id="reloadBtn" type="button">重新读取</button></div></header>
       <div class="status" id="status" role="status"></div>
-      <section class="overview" aria-label="计划概览"><article class="block"><h2>本周总工作任务</h2><div class="markdown" id="summary"></div></article><article class="block warm"><h2>文献阅读任务</h2><div class="markdown" id="reading"></div></article><article class="block"><h2>本周节奏</h2><div class="markdown" id="goals"></div></article></section>
-      <section class="days" id="days" aria-label="每日安排"></section>
+      <nav class="tabs" role="tablist" aria-label="计划分类"><button class="tab active" id="daysTab" role="tab" aria-selected="true" aria-controls="daysPanel" type="button"><strong>每日安排</strong><span>周一 · 周二 · 周三 · 周四 · 周五 · 周六 · 周日</span></button><button class="tab" id="overviewTab" role="tab" aria-selected="false" aria-controls="overviewPanel" type="button"><strong>学术总览</strong><span>总任务 · 文献阅读 · 本周节奏</span></button></nav>
+      <section class="tab-panel" id="daysPanel" role="tabpanel" aria-labelledby="daysTab"><section class="days" id="days" aria-label="每日安排"></section></section>
+      <section class="tab-panel" id="overviewPanel" role="tabpanel" aria-labelledby="overviewTab" hidden><section class="overview" id="overview" aria-label="计划概览"></section></section>
       <footer class="footer"><span id="sourceNote">来源：weekly-plan.md</span><a href="?file=weekly-plan.md">加载默认计划</a></footer>
     </main>
     <script>
@@ -62,10 +73,11 @@
       const escapeHtml=value=>String(value??"").replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
       function inline(text){return escapeHtml(text).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/__([^_]+)__/g,"<strong>$1</strong>").replace(/\*([^*]+)\*/g,"<em>$1</em>").replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noreferrer">$1</a>');}
       function markdown(text){const lines=text.trim().split(/\r?\n/),out=[];let list=false;const close=()=>{if(list){out.push("</ul>");list=false;}};lines.forEach(line=>{const s=line.trim();if(!s){close();return;}const task=s.match(/^[-*+] \[([ xX])\] (.+)$/),bullet=s.match(/^[-*+] (.+)$/);if(task||bullet){if(!list){out.push("<ul>");list=true;}out.push(`<li class="${task?"task":""}">${task?`<label><input type="checkbox" ${task[1].toLowerCase()==="x"?"checked":""} disabled>${inline(task[2])}</label>`:inline(bullet[1])}</li>`);return;}close();if(/^### /.test(s))out.push(`<h3>${inline(s.slice(4))}</h3>`);else if(/^> /.test(s))out.push(`<p>${inline(s.slice(2))}</p>`);else out.push(`<p>${inline(s)}</p>`);});close();return out.join("");}
-      function parsePlan(source){const lines=source.split(/\r?\n/),plan={title:"一周学术计划",subtitle:"",summary:[],reading:[],goals:[],notes:[],days:[]};let section="",current=null;lines.forEach(raw=>{const line=raw.trim();if(!line)return;if(/^# /.test(line)){plan.title=line.slice(2).trim();return;}if(/^> /.test(line)){plan.subtitle=line.slice(2).trim();return;}const day=line.match(/^##\s*(周一|周二|周三|周四|周五|周六|周日)(?:\s*[·|｜-]\s*(.*))?$/);if(day){current={name:day[1],date:day[2]||"",lines:[]};plan.days.push(current);section="day";return;}if(/^## /.test(line)){section=line.slice(3).replace(/[：:]$/g,"").trim();current=null;return;}if(current&&section==="day")current.lines.push(line);else if(/总工作任务|本周任务|研究任务/.test(section))plan.summary.push(line);else if(/文献阅读|阅读任务|论文阅读/.test(section))plan.reading.push(line);else if(/节奏|目标|里程碑|优先/.test(section))plan.goals.push(line);else if(/备注|提醒|注意/.test(section))plan.notes.push(line);});return plan;}
-      function render(plan){$("title").textContent=plan.title;$("subtitle").textContent=plan.subtitle||"一周 PhD 学术安排 · 由 Markdown 文档驱动";$("summary").innerHTML=markdown(plan.summary.join("\n"))||"<p>暂无内容</p>";$("reading").innerHTML=markdown(plan.reading.join("\n"))||"<p>暂无内容</p>";$("goals").innerHTML=markdown(plan.goals.join("\n"))||markdown(plan.notes.join("\n"))||"<p>暂无内容</p>";$("days").innerHTML=plan.days.map(day=>`<article class="day-card"><div class="day-head"><h2>${escapeHtml(day.name)}</h2><span class="day-date">${escapeHtml(day.date)}</span></div><div class="day-body markdown">${markdown(day.lines.join("\n"))}</div></article>`).join("")||"<article class=\"block\"><div class=\"markdown\">未找到每日安排，请检查 Markdown 中是否使用“## 周一”至“## 周日”标题。</div></article>";$("sourceNote").textContent=`来源：${file}`;}
+      function parsePlan(source){const lines=source.split(/\r?\n/),plan={title:"一周学术计划",subtitle:"",overview:[],days:[]};let currentDay=null,currentSection=null;lines.forEach(raw=>{const line=raw.trim();if(!line)return;if(/^# /.test(line)){plan.title=line.slice(2).trim();return;}if(/^> /.test(line)){plan.subtitle=line.slice(2).trim();return;}const day=line.match(/^##\s*(周一|周二|周三|周四|周五|周六|周日)(?:\s*[·|｜-]\s*(.*))?$/);if(day){currentDay={name:day[1],date:day[2]||"",lines:[]};plan.days.push(currentDay);currentSection=null;return;}if(/^## /.test(line)){currentSection={title:line.slice(3).replace(/[：:]$/g,"").trim(),lines:[]};plan.overview.push(currentSection);currentDay=null;return;}if(currentDay)currentDay.lines.push(line);else if(currentSection)currentSection.lines.push(line);});return plan;}
+      function render(plan){$("title").textContent=plan.title;$("subtitle").textContent=plan.subtitle||"一周 PhD 学术安排 · 由 Markdown 文档驱动";$("overview").innerHTML=plan.overview.map(section=>`<article class="block ${/文献阅读|阅读任务|论文阅读/i.test(section.title)?"warm":""}"><h2>${escapeHtml(section.title)}</h2><div class="markdown">${markdown(section.lines.join("\n"))||"<p>暂无内容</p>"}</div></article>`).join("")||"<article class=\"block\"><div class=\"markdown\">暂无总览内容。</div></article>";$("days").innerHTML=plan.days.map(day=>`<article class="day-card"><div class="day-head"><h2>${escapeHtml(day.name)}</h2><span class="day-date">${escapeHtml(day.date)}</span></div><div class="day-body markdown">${markdown(day.lines.join("\n"))}</div></article>`).join("")||"<article class=\"block\"><div class=\"markdown\">未找到每日安排，请检查 Markdown 中是否使用“## 周一”至“## 周日”标题。</div></article>";$("sourceNote").textContent=`来源：${file}`;}
       async function load(){$("status").classList.remove("show");try{const response=await fetch(`./${encodeURIComponent(file).replace(/%2F/g,"/")}`,{cache:"no-store"});if(!response.ok)throw new Error(`无法读取 ${file}（${response.status}）`);render(parsePlan(await response.text()));}catch(error){$("status").textContent=`读取失败：${error.message}。请确认 Markdown 文件与 index.html 位于同一目录，并通过本地服务器或 GitHub Pages 访问。`;$("status").classList.add("show");}}
-      $("printBtn").addEventListener("click",()=>window.print());$("reloadBtn").addEventListener("click",load);load();
+      function activateTab(name){const daysActive=name==="days";$("daysTab").classList.toggle("active",daysActive);$("overviewTab").classList.toggle("active",!daysActive);$("daysTab").setAttribute("aria-selected",daysActive);$("overviewTab").setAttribute("aria-selected",!daysActive);$("daysPanel").hidden=!daysActive;$("overviewPanel").hidden=daysActive;}
+      $("daysTab").addEventListener("click",()=>activateTab("days"));$("overviewTab").addEventListener("click",()=>activateTab("overview"));$("printBtn").addEventListener("click",()=>window.print());$("reloadBtn").addEventListener("click",load);load();
     </script>
   </body>
 </html>
