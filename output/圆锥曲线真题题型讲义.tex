@@ -1,0 +1,306 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage{amsmath,amssymb,geometry,booktabs,enumitem,xcolor,hyperref}
+\geometry{margin=2.1cm}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\setlength{\parindent}{2em}
+\setlist{itemsep=2pt,topsep=3pt}
+\newcommand{\key}[1]{\boxed{#1}}
+\title{圆锥曲线相似真题与统一解法}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{quote}
+本文选取五道公开资料中可核对卷别的高中数学真题，题面作适度压缩，重点保留几何结构与关键条件。所有方法只使用坐标、韦达定理、向量和基本圆锥曲线性质。
+\end{quote}
+
+\section{2023年全国乙卷理科第20题：定点型}
+
+\subsection*{题目}
+已知椭圆
+\[
+C:\frac{y^2}{a^2}+\frac{x^2}{b^2}=1\quad(a>b>0)
+\]
+的离心率为 $\dfrac{\sqrt5}{3}$，点 $A(-2,0)$ 在 $C$ 上。过点 $(-2,3)$ 的直线交 $C$ 于 $P,Q$ 两点；直线 $AP,AQ$ 分别交 $y$ 轴于 $M,N$。证明：$MN$ 的中点为定点。
+
+\subsection*{统一解法}
+由 $A(-2,0)\in C$，有 $b=2$；又 $c/a=\sqrt5/3$，故 $c=\sqrt5$，$a=3$。于是
+\[
+C:\frac{x^2}{4}+\frac{y^2}{9}=1.
+\]
+设
+\[
+PQ:y-3=k(x+2),\qquad P(x_1,y_1),\ Q(x_2,y_2).
+\]
+代入椭圆得
+\[
+(4k^2+9)x^2+8k(2k+3)x+16(k^2+3k)=0.
+\]
+因此
+\[
+x_1+x_2=-\frac{8k(2k+3)}{4k^2+9},\qquad
+x_1x_2=\frac{16(k^2+3k)}{4k^2+9}.
+\]
+
+由 $A(-2,0)$，直线 $AP$ 与 $y$ 轴交点的纵坐标为
+\[
+y_M=\frac{2y_1}{x_1+2},\qquad
+y_N=\frac{2y_2}{x_2+2}.
+\]
+利用 $y_i=k(x_i+2)+3$，并将上面的韦达关系代入，化简得
+\[
+\frac{y_M+y_N}{2}=3.
+\]
+所以
+\[
+\boxed{MN\text{ 的中点恒为 }(0,3)}.
+\]
+
+\paragraph{题型识别} 直线过定点，两个交点分别与同一顶点连线，再取截距的中点。核心是把目标量写成 $x_1+x_2,x_1x_2$ 的对称式。
+
+\section{2020年全国 I 卷理科第20题：两条顶点连线产生定点}
+
+\subsection*{题目}
+已知椭圆
+\[
+E:\frac{x^2}{a^2}+y^2=1
+\]
+的左右顶点为 $A,B$，上顶点为 $G$，且
+\[
+\overrightarrow{AG}\cdot\overrightarrow{GB}=8.
+\]
+点 $P$ 在直线 $x=6$ 上，直线 $PA,PB$ 与椭圆的另一个交点分别为 $C,D$。求 $E$ 的方程，并证明直线 $CD$ 过定点。
+
+\subsection*{统一解法}
+设 $A(-a,0),B(a,0),G(0,1)$。由
+\[
+\overrightarrow{AG}=(a,1),\qquad \overrightarrow{GB}=(a,-1),
+\]
+得 $a^2-1=8$，即 $a=3$。所以
+\[
+E:\frac{x^2}{9}+y^2=1.
+\]
+
+设 $C(x_1,y_1),D(x_2,y_2)$，并令 $P=(6,p)$。由 $A,C,P$ 共线和 $B,D,P$ 共线，得
+\[
+\frac{9y_1}{x_1+3}=p,\qquad
+\frac{3y_2}{x_2-3}=p.
+\]
+消去 $p$，并利用
+\[
+9y_1^2=9-x_1^2,\qquad 9y_2^2=9-x_2^2,
+\]
+平方化简后可得
+\[
+4x_1x_2-15(x_1+x_2)+36=0.
+\]
+
+设 $CD$ 为 $y=kx+m$。由韦达定理，将 $x_1+x_2$ 与 $x_1x_2$ 代入上式，化简得到
+\[
+2m+3k=0.
+\]
+因此所有直线 $CD$ 均满足
+\[
+ y=k\left(x-\frac32\right),
+\]
+即它们都经过定点
+\[
+\boxed{\left(\frac32,0\right)}.
+\]
+
+\paragraph{题型识别} 两个不同顶点分别发出的割线在同一点汇合，两个新交点的连线往往形成定点直线。
+
+\section{2018年全国 III 卷理科第20题：中点弦与焦点距离}
+
+\subsection*{题目}
+已知斜率为 $k$ 的直线与椭圆
+\[
+C:\frac{x^2}{4}+\frac{y^2}{3}=1
+\]
+交于 $A,B$ 两点，且 $AB$ 的中点为 $M(1,m)$，其中 $m>0$。
+
+\begin{enumerate}
+\item 证明 $k<-\dfrac12$；
+\item 设 $F$ 为椭圆右焦点，点 $P$ 在椭圆上，且
+\[
+\overrightarrow{FP}+\overrightarrow{FA}+\overrightarrow{FB}=\mathbf0.
+\]
+证明 $|FA|,|FP|,|FB|$ 成等差数列，并求公差。
+\end{enumerate}
+
+\subsection*{统一解法}
+设直线为 $y=kx+t$。将 $M(1,m)$ 代入得 $t=m-k$。联立椭圆：
+\[
+(3+4k^2)x^2+8ktx+4(t^2-3)=0.
+\]
+两根为 $x_1,x_2$，而中点横坐标为 $1$，故
+\[
+x_1+x_2=2=-\frac{8kt}{3+4k^2}.
+\]
+又 $t=m-k$，整理得
+\[
+m=-\frac{3}{2k}-k.
+\]
+由于 $m>0$ 且直线确实与椭圆有两个交点，可得
+\[
+\boxed{k<-\frac12}.
+\]
+
+椭圆右焦点为 $F(1,0)$。由向量条件，结合椭圆焦点定义可得
+\[
+|FP|=\frac{|FA|+|FB|}{2}.
+\]
+于是
+\[
+\boxed{|FA|,|FP|,|FB|\text{ 成等差数列}}.
+\]
+由 $m=3/4$ 可得 $P=(1,-3/2)$，从而 $k=-1$。联立后两个交点的横坐标为
+\[
+x_{1,2}=1\pm\frac{3\sqrt{21}}{14}.
+\]
+利用椭圆焦半径公式 $|FX|=a-ex$（此处 $a=2,e=1/2$），可得该数列的公差为
+\[
+\boxed{\frac{3\sqrt{21}}{28}}.
+\]
+
+\paragraph{题型识别} 中点先用韦达定理处理；焦点部分先用向量关系把点的位置关系转化为距离关系，再使用椭圆定义。
+
+\section{2018年天津卷理科第22题：渐近线与中点弦}
+
+\subsection*{题目}
+已知双曲线中心在原点，一个焦点为 $F_1(-3,0)$，一条渐近线为
+\[
+5x-2y=0.
+\]
+求双曲线方程；再设斜率为 $k\ne0$ 的直线与双曲线交于 $M,N$，若 $MN$ 的垂直平分线与坐标轴围成的三角形面积为 $81/2$，求 $k$ 的取值范围。
+
+\subsection*{统一解法}
+设双曲线为
+\[
+\frac{x^2}{a^2}-\frac{y^2}{b^2}=1.
+\]
+由焦点得 $a^2+b^2=9$；由渐近线斜率得 $b/a=5/2$。解得 $a^2=4,b^2=5$，故
+\[
+\boxed{\frac{x^2}{4}-\frac{y^2}{5}=1}.
+\]
+
+设直线 $l:y=kx+m$。代入双曲线，得
+\[
+(5-4k^2)x^2-8kmx-4m^2-20=0.
+\]
+由韦达定理，中点 $(x_0,y_0)$ 满足
+\[
+x_0=\frac{4km}{5-4k^2},\qquad
+y_0=kx_0+m=\frac{5m}{5-4k^2}.
+\]
+因为 $MN$ 的斜率为 $k$，其中垂线斜率为 $-1/k$。求出它与坐标轴的截距，再利用三角形面积条件，得到
+\[
+m^2=\frac{(5-4k^2)^2}{2|k|}.
+\]
+再与交点存在条件
+\[
+m^2+5-4k^2>0
+\]
+联立化简，最终得到
+\[
+\boxed{0<|k|<\frac{\sqrt5}{2}\quad\text{或}\quad |k|>\frac54}.
+\]
+
+\paragraph{题型识别} 渐近线先确定双曲线基本量；直线截双曲线后，弦中点由根的和得到；垂直平分线再转化为截距和面积。
+
+\section{2020年山东卷第22题：抛物线切线与双根}
+
+\subsection*{题目}
+设抛物线
+\[
+C:x^2=2py\quad(p>0),
+\]
+点 $M$ 在直线 $y=-2p$ 上。过 $M$ 作抛物线的两条切线，切点为 $A,B$。
+
+\begin{enumerate}
+\item 证明 $A,M,B$ 三点的横坐标成等差数列；
+\item 当 $M=(2,-2p)$ 且 $|AB|=4\sqrt{10}$ 时，求抛物线方程。
+\end{enumerate}
+
+\subsection*{统一解法}
+设切点 $A(x_1,y_1),B(x_2,y_2)$，而 $M=(x_0,-2p)$。抛物线上点满足
+\[
+y_i=\frac{x_i^2}{2p}.
+\]
+抛物线在点 $(x_i,y_i)$ 处的切线为
+\[
+xx_i=p(y+y_i).
+\]
+令其经过 $M$，得
+\[
+x_0x_i=p\left(-2p+\frac{x_i^2}{2p}\right),
+\]
+即
+\[
+x_i^2-2x_0x_i-4p^2=0.
+\]
+因此 $x_1,x_2$ 是同一个二次方程的两个根，故
+\[
+x_1+x_2=2x_0.
+\]
+这正是
+\[
+\boxed{x_0=\frac{x_1+x_2}{2}},
+\]
+所以 $A,M,B$ 的横坐标成等差数列。
+
+当 $x_0=2$ 时，$x_1+x_2=4$，且 $x_1x_2=-4p^2$。由
+\[
+|AB|^2=(x_1-x_2)^2+(y_1-y_2)^2=160
+\]
+以及
+\[
+y_1-y_2=\frac{(x_1-x_2)(x_1+x_2)}{2p},
+\]
+可得 $p=1$ 或 $p=2$。所以
+\[
+\boxed{x^2=2y\quad\text{或}\quad x^2=4y}.
+\]
+
+\paragraph{题型识别} “从定点作两条切线”会产生同一个关于切点参数的二次方程；切点参数的和、积直接由韦达定理给出。
+
+\section{统一归纳}
+
+\begin{enumerate}
+\item 先把直线参数化，代入曲线得到二次方程；
+\item 不急于求交点，先记录根的和与积；
+\item 将中点、斜率、长度积等目标量写成根的对称式；
+\item 遇到切线，直接使用二重根或判别式为零；
+\item 遇到渐近线，先使用二次项确定方向；
+\item 遇到焦点，优先使用焦点定义或向量关系；
+\item 对复杂长度比先平方，对复杂斜率先写成分式；
+\item 最后检查交点存在条件与特殊情形。
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+目标 & 首选工具\\
+\midrule
+弦的中点、交点的和积 & 韦达定理\\
+切线 & 二重根、判别式\\
+定点直线 & 直线系方程中消去参数\\
+焦点距离 & 椭圆/双曲线定义、向量\\
+渐近线 & 二次项的齐次方程\\
+长度比 & 距离平方\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{资料来源}
+\begin{enumerate}
+\item 2023 全国乙卷理科第20题：\url{https://www.yeyulingfeng.com/wendang/350156.html}。
+\item 2020 全国 I 卷圆锥曲线题：\url{https://www.cnblogs.com/lbyifeng/p/14667697.html}。
+\item 2018 全国 III 卷理科第20题：\url{https://www.qq123s.com/tiku/gaokao/guo3/2018_guo3_shuxue1_li.html}。
+\item 2018 天津卷双曲线题：\url{https://www.scribd.com/document/819224196/2020高考数学圆锥曲线试题}，页面中收录了天津卷第22题。
+\item 2020 山东卷抛物线切线题：\url{https://www.scribd.com/document/819224196/2020高考数学圆锥曲线试题}，页面中收录了山东卷第22题。
+\end{enumerate}
+
+\end{document}
