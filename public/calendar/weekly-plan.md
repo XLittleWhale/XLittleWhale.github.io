@@ -1,4 +1,4 @@
-# PhD Week Schedule
+# PhD Week Plan
 > 2026.09.28 Mon — 2026.10.04 Sun
 
 ## In Progress
@@ -12,6 +12,10 @@
 - DSMC-induced vortex points reconnection
 - Generated Model of discrete vortex filaments
 - Gauge Theorem of Vortice field
+
+## 一些想学的
+- Differential Manifold
+- Partial Differential Equations
 
 ## 周一
 - 15:00–18:00 | **上课 · 流体力学量子计算 · 三教206**
