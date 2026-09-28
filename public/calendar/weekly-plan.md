@@ -1,33 +1,32 @@
-# PhD 一周计划
-> 2026.09.21 周一 — 2026.09.28 周日 · 研究主题：写作、阅读与实验推进
+# PhD Week Schedule
+> 2026.09.28 Mon — 2026.10.04 Sun
 
-## 本周总览
-- [ ] 家教ppt
-- [ ] analog 讨论ppt
-- [ ] counterflow reconstruction
+## In Progress
+- [ ] Counterflow Reconstruction
+- [ ] Analog Quantum Simulation: From Shell Model to NSE
 
-## 文献阅读
+## Done 
 
 
-## Idea储存
-- 重建二流体
-- 重建量子湍流
-- DSMC处理vortex point
-- 离散涡丝生成模型
-- 涡量场作为规范场论
+## Future
+- DSMC-induced vortex points reconnection
+- Generated Model of discrete vortex filaments
+- Gauge Theorem of Vortice field
 
 ## 周一
-- 15:00–18:00 | **上课 · 流体力学量子计算 · 理教314**
+- 15:00–18:00 | **上课 · 流体力学量子计算 · 三教206**
 
 ## 周二
 - 13:00–15:00 | **上课 · 科研写作 · 理教315**
 - 15:00–18:00 | **上课 · 高等应用数学 · 一教307**
+- 准备CF新训练数据+记录现有结果
 
 ## 周三
-- 15:00–18:00 | **上课 · 高等流体力学 · 三教101**
-- 
-## 周四
 - 10:00–12:00 | **上课 · 冷原子模拟 · 四教402**
+- 15:00–18:00 | **上课 · 高等流体力学 · 三教101**
+- 整理冷原子版本的FCD模型
+
+## 周四
 - 15:00–18:00 | **上课 · 湍流 · 三教303**
 
 ## 周五
